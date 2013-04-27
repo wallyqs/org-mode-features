@@ -1,0 +1,123 @@
+#+TITLE: Attempt at documenting Org-mode features and how they map in Org-ruby
+#+TODO: TODO | DONE FEATURE
+
+* Introduction
+  
+  This document is an attempt to describe the current state
+  of known features in Org-mode, along with this development status
+  in the Org-ruby implementation.  This document will not present
+  some corner cases of the implementation, but rather the feature
+  parity status of Org-ruby and the original Emacs Org-mode implementation.
+  Mmore thorough tests on the implementationcan be found within the 
+  =specs/= folder along with the expected output.
+
+  Since Org-ruby is mainly an exporter, we are specially
+  interested in the following things from Org-mode:
+
+  - The markup language itself
+
+  - The headline features
+    + Keywords
+    + Tags
+    + Drawers (like =:PROPERTIES:=, =:LOGBOOK:=, etc...)
+    + Supported markup
+
+  - The several kind of blocks(=#+begin_*=) and how they should be exported
+
+  - The in-buffer settings used when exporting like =#+OPTIONS:=, =#+TITLE:=, etc...
+
+* Approach
+
+1. Each one of the features will have its own headline as an org-babel
+  ruby block, which after being executed will generate a file with the output
+  from the Emacs renderer and the Org-ruby renderer.
+
+2. You will need to fetch =org-mode= features to test the latest set of
+   features from the original Emacs implementation.
+
+   #+begin_src sh
+   git clone git://orgmode.org/org-mode.git
+   #+end_src
+
+3. The Org-mode implementation located in the folder will be loaded
+   in batch mode to and export to html the example file.
+
+   #+begin_src sh :tangle org-emacs.sh :shebang #!/bin/bash
+   # FIXME: Detect environment instead of only supporting OS X
+   /Applications/Emacs.app/Contents/MacOS/Emacs -Q --batch --eval "(add-to-list 'load-path (expand-file-name \"./org-mode/lisp/\")) (require 'org) (message \"Exporting file to HTML\")" --visit headlines/default-keywords.org --funcall org-export-as-html
+   #+end_src
+
+4. Then, the same file will be exported to HTML using the Org-ruby implementation.
+
+   #+begin_src sh :results output
+   bundle exec org-ruby --translate html > $file-org-ruby.html
+   #+end_src
+
+* [1/5] Headline features
+** FEATURE Keywords that can be used at the beginning of a headline
+
+By default, the preserved keyword in a headline are TODO and DONE.
+
+#+begin_src org :tangle headline :tangle headlines/default-keywords.org
+  ,* TODO Headline 1
+  ,** TODO Headline 2
+  ,*** DONE Finished Headline 3
+  ,**** TODO Headline 4 
+#+end_src
+
+** TODO Comment headlines
+** TODO Quote headlines
+** TODO Tags in the headlines
+** TODO PROPERTIES and LOGBOOK drawers
+* [1/3] Paragraph markup features
+
+Markup that can be used within paragraphs, like emphasis, links, examples.
+
+** FEATURE Text emphasis
+
+#+begin_src org :tangle markup/basic-emphasis.org
+
+#+end_src
+
+** TODO Links
+
+Many kind of links
+
+** TODO Lists
+* [0/5] Block features
+** TODO Code blocks
+** TODO HTML blocks
+** TODO Quote blocks
+** TODO Comment blocks
+** TODO Unknown blocks
+
+This ones are treated as default source blocks.
+
+* [0/4] Exporting options
+
+The default export options can be modified slightly as
+documented here:
+
+http://orgmode.org/manual/In_002dbuffer-settings.html
+http://orgmode.org/manual/Export-settings.html#Export-settings
+
+** TODO Keywords can be changed with options
+
+#+begin_src org :tangle options/custom-keywords-in-headlines.org
+
+#+end_src
+
+** TODO #+TITLE: option
+** TODO #+DESCRIPTION: option
+** TODO #+OPTIONS: todo:t
+* COMMENT
+** Useful sources to compile the features
+
+- Karl Voit made a set of features from org-mode for a workshop
+  https://github.com/novoid/org-mode-workshop
+
+- The Org-mode manual itself I guess
+
+# Local Variables:
+# eval: (setq org-babel-sh-command "bash")
+# mode: auto-fill
