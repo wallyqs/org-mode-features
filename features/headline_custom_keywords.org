@@ -1,0 +1,6 @@
+
+#+TODO: TODO | DONE CANCELED
+
+* DONE Default keyword
+* CANCELED Custom keyword
+* TODO Default keyword

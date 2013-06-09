@@ -1,0 +1,7 @@
+
+#+TODO: TODO | DONE CANCELED
+#+OPTIONS: todo:t
+
+* DONE Default keyword
+* CANCELED Custom keyword
+* TODO Default keyword

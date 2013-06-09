@@ -1,5 +1,6 @@
 #+TITLE: Attempt at documenting Org-mode features and how they map in Org-ruby
-#+TODO: TODO | DONE FEATURE
+#+TODO: NEEDS_EXAMPLES NOT_IMPLEMENTED PARTIALLY_IMPLEMENTED | IMPLEMENTED
+#+OPTIONS: todo:t
 
 * Introduction
   
@@ -26,70 +27,1189 @@
 
   - The in-buffer settings used when exporting like =#+OPTIONS:=, =#+TITLE:=, etc...
 
-* Approach
-
-1. Each one of the features will have its own headline as an org-babel
-  ruby block, which after being executed will generate a file with the output
-  from the Emacs renderer and the Org-ruby renderer.
-
-2. You will need to fetch =org-mode= features to test the latest set of
-   features from the original Emacs implementation.
-
-   #+begin_src sh
-   git clone git://orgmode.org/org-mode.git
-   #+end_src
-
-3. The Org-mode implementation located in the folder will be loaded
-   in batch mode to and export to html the example file.
-
-   #+begin_src sh :tangle org-emacs.sh :shebang #!/bin/bash
-   # FIXME: Detect environment instead of only supporting OS X
-   /Applications/Emacs.app/Contents/MacOS/Emacs -Q --batch --eval "(add-to-list 'load-path (expand-file-name \"./org-mode/lisp/\")) (require 'org) (message \"Exporting file to HTML\")" --visit headlines/default-keywords.org --funcall org-export-as-html
-   #+end_src
-
-4. Then, the same file will be exported to HTML using the Org-ruby implementation.
-
-   #+begin_src sh :results output
-   bundle exec org-ruby --translate html > $file-org-ruby.html
-   #+end_src
-
-* [1/5] Headline features
-** FEATURE Keywords that can be used at the beginning of a headline
+* [4/7] Headline features
+** IMPLEMENTED Keywords that can be used at the beginning of a headline
 
 By default, the preserved keyword in a headline are TODO and DONE.
 
-#+begin_src org :tangle headline :tangle headlines/default-keywords.org
+#+begin_src org :tangle features/headline_default_keywords.org
   ,* TODO Headline 1
   ,** TODO Headline 2
   ,*** DONE Finished Headline 3
   ,**** TODO Headline 4 
+  ,** CANCELED Not a reserved keyword so it will be displayed
 #+end_src
 
-** TODO Comment headlines
-** TODO Quote headlines
-** TODO Tags in the headlines
-** TODO PROPERTIES and LOGBOOK drawers
+*** In emacs
+
+#+begin_src sh :replace :results output html
+cat features/headline_default_keywords.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="todo TODO">TODO</span> Headline 1</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="todo TODO">TODO</span> Headline 2</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+</div>
+
+<div id="outline-container-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="done DONE">DONE</span> Finished Headline 3</h4>
+<div class="outline-text-4" id="text-1-1-1">
+
+
+</div>
+
+<div id="outline-container-1-1-1-1" class="outline-5">
+<h5 id="sec-1-1-1-1"><span class="todo TODO">TODO</span> Headline 4</h5>
+<div class="outline-text-5" id="text-1-1-1-1">
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2">CANCELED Not a reserved keyword so it will be displayed</h3>
+<div class="outline-text-3" id="text-1-2">
+
+</div>
+</div>
+</div>
+#+END_HTML
+
+*** In ruby
+
+#+begin_src sh :replace :results output html
+cat features/headline_default_keywords.org-ruby.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<h1>Headline 1</h1>
+<h2>Headline 2</h2>
+<h3>Finished Headline 3</h3>
+<h4>Headline 4</h4>
+<h2>CANCELED Not a reserved keyword so it will be displayed</h2>
+#+END_HTML
+
+** IMPLEMENTED Keywords can be modified by specifying the =#+TODO= option.
+
+#+begin_src org :tangle features/headline_custom_keywords.org
+  ,#+TODO: TODO | DONE CANCELED
+  
+  ,* DONE Default keyword
+  ,* CANCELED Custom keyword
+  ,* TODO Default keyword
+#+end_src
+
+*** In emacs
+
+#+begin_src sh :replace :results output html
+cat features/headline_default_keywords.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="todo TODO">TODO</span> Headline 1</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="todo TODO">TODO</span> Headline 2</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+</div>
+
+<div id="outline-container-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1"><span class="done DONE">DONE</span> Finished Headline 3</h4>
+<div class="outline-text-4" id="text-1-1-1">
+
+
+</div>
+
+<div id="outline-container-1-1-1-1" class="outline-5">
+<h5 id="sec-1-1-1-1"><span class="todo TODO">TODO</span> Headline 4</h5>
+<div class="outline-text-5" id="text-1-1-1-1">
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2">CANCELED Not a reserved keyword so it will be displayed</h3>
+<div class="outline-text-3" id="text-1-2">
+
+</div>
+</div>
+</div>
+#+END_HTML
+
+*** In ruby
+
+#+begin_src sh :replace :results output html
+cat features/headline_default_keywords.org-ruby.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<h1>Headline 1</h1>
+<h2>Headline 2</h2>
+<h3>Finished Headline 3</h3>
+<h4>Headline 4</h4>
+<h2>CANCELED Not a reserved keyword so it will be displayed</h2>
+#+END_HTML
+
+** IMPLEMENTED Keywords can be displayed with OPTIONS
+
+In org-ruby, TODO keywords will not be displayed by default.
+In order to do this, it is necessary to specify it in the =#+OPTIONS:=.
+
+#+begin_src org :tangle features/headline_custom_keywords_displayed.org
+  ,#+TODO: TODO | DONE CANCELED
+  ,#+OPTIONS: todo:t
+  
+  ,* DONE Default keyword
+  ,* CANCELED Custom keyword
+  ,* TODO Default keyword
+#+end_src
+
+*** In emacs
+
+#+begin_src sh :replace :results output html
+cat features/headline_custom_keywords_displayed.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="done DONE">DONE</span> Default keyword</h2>
+<div class="outline-text-2" id="text-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="done CANCELED">CANCELED</span> Custom keyword</h2>
+<div class="outline-text-2" id="text-2">
+
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="todo TODO">TODO</span> Default keyword</h2>
+<div class="outline-text-2" id="text-3">
+
+</div>
+</div>
+#+END_HTML
+
+*** In ruby
+
+#+begin_src sh :replace :results output html
+cat features/headline_custom_keywords_displayed.org-ruby.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<h1><span class="todo-keyword DONE">DONE</span> Default keyword</h1>
+<h1><span class="todo-keyword CANCELED">CANCELED</span> Custom keyword</h1>
+<h1><span class="todo-keyword TODO">TODO</span> Default keyword</h1>
+#+END_HTML
+
+** IMPLEMENTED COMMENT headlines
+
+COMMENT is a reserved keyword that makes the following headlines
+to be discarded from the rendering output.
+
+#+begin_src org :tangle features/headline_commented.org
+  ,* Headline 1
+  ,** Headline 2
+  ,*** Headline 3
+  ,** COMMENT Headline 4 not exported
+  ,*** Headline 5 not exported either
+  ,**** Headline 6 not exported either
+  ,** Headline 7 is exported  
+#+end_src
+
+*** In emacs
+
+#+begin_src sh :replace :results output html
+cat features/headline_commented.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1">Headline 1</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1">Headline 2</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+</div>
+
+<div id="outline-container-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">Headline 3</h4>
+<div class="outline-text-4" id="text-1-1-1">
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2">Headline 7 is exported</h3>
+<div class="outline-text-3" id="text-1-2">
+
+</div>
+</div>
+</div>
+#+END_HTML
+
+*** In ruby
+
+#+begin_src sh :replace :results output html
+cat features/headline_commented.org-ruby.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<h1>Headline 1</h1>
+<h2>Headline 2</h2>
+<h3>Headline 3</h3>
+<h2>Headline 7 is exported</h2>
+#+END_HTML
+
+** NOT_IMPLEMENTED QUOTE headlines
+
+QUOTE is a reserved keyword which makes the headline
+work similar to the =#+begin_quote= block.
+
+#+begin_src org :tangle features/headline_quoted.org
+  ,* Introduction
+  ,** QUOTE from Nietzche
+  
+  ,Love is not consolation, it is light.
+#+end_src
+
+*** In emacs
+
+#+begin_src sh :replace :results output html
+cat features/headline_quoted.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1">Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1">from Nietzche</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<pre>
+Love is not consolation, it is light.
+</pre>
+
+</div>
+</div>
+</div>
+#+END_HTML
+
+*** In ruby
+
+This is not supported in org-ruby.
+
+#+begin_src sh :replace :results output html
+cat features/headline_quoted.org-ruby.html
+#+end_src
+
+#+RESULTS:
+#+BEGIN_HTML
+<h1>Introduction</h1>
+<h2>QUOTE from Nietzche</h2>
+<p>Love is not consolation, it is light.</p>
+#+END_HTML
+
+** NOT_IMPLEMENTED Tags in the headlines
+
+Org-mode supports putting tags on a headline like =:TAG:=.
+
+#+begin_src org :tangle features/headline_tags.org
+  ,* Headline without tags
+  
+  ,Hi
+  
+  ,* Headline with tags                                                :exports:
+  
+  ,What does this do?
+#+end_src
+
+** PARTIALLY_IMPLEMENTED PROPERTIES and LOGBOOK drawers
+
+Currently =:PROPERTIES:= drawers are detected and removed from output,
+but nothing else special is done to them.
+
 * [1/3] Paragraph markup features
 
 Markup that can be used within paragraphs, like emphasis, links, examples.
 
-** FEATURE Text emphasis
+** IMPLEMENTED Text emphasis
 
-#+begin_src org :tangle markup/basic-emphasis.org
-
+#+begin_src org :tangle features/markup_basic_emphasis.org
+You can make words *bold*, /italic/, _underlined_, =code= and
+~verbatim~, and, if you must, ‘+strike-through+’. Text in the code and
+verbatim string is not processed for Org mode specific syntax, it is
+exported verbatim.
 #+end_src
 
-** TODO Links
+*** Complex test of using emphasis in Org-mode
+
+#+begin_src org :tangle features/markup_complex_emphasis.org
+  ,** Basic inline markup features
+  
+  ,*bold*
+  
+  ,/italic/
+  
+  ,=code=
+  
+  ,~verbatim~
+  
+  ,_underline_ 
+  
+  ,+strikethrough+
+  
+  ,[[http://www.bing.com]]
+  
+  ,[[http://www.google.com]]
+  
+  ,http://www.gmail.com
+  
+  ,[[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com>
+  
+  ,** All together in one line
+  
+  ,*bold* /italic/ =code= ~verbatim~ _underline_  +strikethrough+ [[http://www.bing.com]] [[http://www.google.com]] http://www.gmail.com [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>
+  
+  ,** Within code test
+  
+  ,#+begin_example
+  ,emphasis_tests = [
+  ,"*bold*",
+  ,"/italic/",
+  ,"=code=",
+  ,"~verbatim~",
+  ,"_underline_ ",
+  ,"+strikethrough+",
+  ,"[[http://www.bing.com]]",
+  ,"[[http://www.google.com]]",
+  ,"[[http://www.xkcd.com][helpful text link]]",
+  ,"[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]",
+  ,"[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]",
+  ,"<http://www.google.com>",
+  ,]
+  
+  ,all = emphasis_tests.map do |a|
+  ,  emphasis_tests.map do |b|
+  ,    [b, ' ', a, ' ', b, "\n\n"].join('')
+  ,  end
+  ,end
+  
+  ,all.each {|e| puts e}
+  ,#+end_example
+  
+  ,** Mixed together test
+  
+  ,#+begin_example
+  ,emphasis_tests = ["*","/","=","~","_","+"]
+  
+  ,all = emphasis_tests.map do |a|
+  ,  emphasis_tests.map do |b|
+  ,    [[a, 'Answer: ', b, '42', b, ' ',a, "\n\n"].join(''),
+  ,     [a, 'Answer: ', b, '42', b, '',a, "\n\n"].join('')].flatten
+  ,  end
+  ,end
+  
+  ,all.each {|e| puts e}
+  ,#+end_example
+  
+  ,*Answer: *42* *
+  
+  ,*Answer: *42**
+  
+  ,*Answer: /42/ *
+  
+  ,*Answer: /42/*
+  
+  ,*Answer: =42= *
+  
+  ,*Answer: =42=*
+  
+  ,*Answer: ~42~ *
+  
+  ,*Answer: ~42~*
+  
+  ,*Answer: _42_ *
+  
+  ,*Answer: _42_*
+  
+  ,*Answer: +42+ *
+  
+  ,*Answer: +42+*
+  
+  ,/Answer: *42* /
+  
+  ,/Answer: *42*/
+  
+  ,/Answer: /42/ /
+  
+  ,/Answer: /42//
+  
+  ,/Answer: =42= /
+  
+  ,/Answer: =42=/
+  
+  ,/Answer: ~42~ /
+  
+  ,/Answer: ~42~/
+  
+  ,/Answer: _42_ /
+  
+  ,/Answer: _42_/
+  
+  ,/Answer: +42+ /
+  
+  ,/Answer: +42+/
+  
+  ,=Answer: *42* =
+  
+  ,=Answer: *42*=
+  
+  ,=Answer: /42/ =
+  
+  ,=Answer: /42/=
+  
+  ,=Answer: =42= =
+  
+  ,=Answer: =42==
+  
+  ,=Answer: ~42~ =
+  
+  ,=Answer: ~42~=
+  
+  ,=Answer: _42_ =
+  
+  ,=Answer: _42_=
+  
+  ,=Answer: +42+ =
+  
+  ,=Answer: +42+=
+  
+  ,~Answer: *42* ~
+  
+  ,~Answer: *42*~
+  
+  ,~Answer: /42/ ~
+  
+  ,~Answer: /42/~
+  
+  ,~Answer: =42= ~
+  
+  ,~Answer: =42=~
+  
+  ,~Answer: ~42~ ~
+  
+  ,~Answer: ~42~~
+  
+  ,~Answer: _42_ ~
+  
+  ,~Answer: _42_~
+  
+  ,~Answer: +42+ ~
+  
+  ,~Answer: +42+~
+  
+  ,_Answer: *42* _
+  
+  ,_Answer: *42*_
+  
+  ,_Answer: /42/ _
+  
+  ,_Answer: /42/_
+  
+  ,_Answer: =42= _
+  
+  ,_Answer: =42=_
+  
+  ,_Answer: ~42~ _
+  
+  ,_Answer: ~42~_
+  
+  ,_Answer: _42_ _
+  
+  ,_Answer: _42__
+  
+  ,_Answer: +42+ _
+  
+  ,_Answer: +42+_
+  
+  ,+Answer: *42* +
+  
+  ,+Answer: *42*+
+  
+  ,+Answer: /42/ +
+  
+  ,+Answer: /42/+
+  
+  ,+Answer: =42= +
+  
+  ,+Answer: =42=+
+  
+  ,+Answer: ~42~ +
+  
+  ,+Answer: ~42~+
+  
+  ,+Answer: _42_ +
+  
+  ,+Answer: _42_+
+  
+  ,+Answer: +42+ +
+  
+  ,+Answer: +42++
+  
+  ,** Multiline support test :: one line
+  
+  ,#+begin_example
+  ,emphasis_tests = ["*","/","=","~","_","+"]
+  
+  ,all = emphasis_tests.map do |a|
+  ,  emphasis_tests.map do |b|
+  ,    [a, 'Starting the line here ', "\n", b, 'and continuing here to close', b, a, "\n\n"].join('')
+  ,  end
+  ,end
+  
+  ,all.each {|e| puts e}
+  ,#+end_example
+  
+  ,*Starting the line here 
+  ,*and continuing here to close**
+  
+  ,*Starting the line here 
+  ,/and continuing here to close/*
+  
+  ,*Starting the line here 
+  ,=and continuing here to close=*
+  
+  ,*Starting the line here 
+  ,~and continuing here to close~*
+  
+  ,*Starting the line here 
+  ,_and continuing here to close_*
+  
+  ,*Starting the line here 
+  ,+and continuing here to close+*
+  
+  ,/Starting the line here 
+  ,*and continuing here to close*/
+  
+  ,/Starting the line here 
+  ,/and continuing here to close//
+  
+  ,/Starting the line here 
+  ,=and continuing here to close=/
+  
+  ,/Starting the line here 
+  ,~and continuing here to close~/
+  
+  ,/Starting the line here 
+  ,_and continuing here to close_/
+  
+  ,/Starting the line here 
+  ,+and continuing here to close+/
+  
+  ,=Starting the line here 
+  ,*and continuing here to close*=
+  
+  ,=Starting the line here 
+  ,/and continuing here to close/=
+  
+  ,=Starting the line here 
+  ,=and continuing here to close==
+  
+  ,=Starting the line here 
+  ,~and continuing here to close~=
+  
+  ,=Starting the line here 
+  ,_and continuing here to close_=
+  
+  ,=Starting the line here 
+  ,+and continuing here to close+=
+  
+  ,~Starting the line here 
+  ,*and continuing here to close*~
+  
+  ,~Starting the line here 
+  ,/and continuing here to close/~
+  
+  ,~Starting the line here 
+  ,=and continuing here to close=~
+  
+  ,~Starting the line here 
+  ,~and continuing here to close~~
+  
+  ,~Starting the line here 
+  ,_and continuing here to close_~
+  
+  ,~Starting the line here 
+  ,+and continuing here to close+~
+  
+  ,_Starting the line here 
+  ,*and continuing here to close*_
+  
+  ,_Starting the line here 
+  ,/and continuing here to close/_
+  
+  ,_Starting the line here 
+  ,=and continuing here to close=_
+  
+  ,_Starting the line here 
+  ,~and continuing here to close~_
+  
+  ,_Starting the line here 
+  ,_and continuing here to close__
+  
+  ,_Starting the line here 
+  ,+and continuing here to close+_
+  
+  ,+Starting the line here 
+  ,*and continuing here to close*+
+  
+  ,+Starting the line here 
+  ,/and continuing here to close/+
+  
+  ,+Starting the line here 
+  ,=and continuing here to close=+
+  
+  ,+Starting the line here 
+  ,~and continuing here to close~+
+  
+  ,+Starting the line here 
+  ,_and continuing here to close_+
+  
+  ,+Starting the line here 
+  ,+and continuing here to close++
+  
+  ,** Multiline support test :: two lines
+  
+  ,#+begin_example
+  ,emphasis_tests = ["*","/","=","~","_","+"]
+  
+  ,all = emphasis_tests.map do |a|
+  ,  emphasis_tests.map do |b|
+  ,    [a, 'Starting the line here ', "\n", b, 'and continuing here', "\n", 'to close', b, a, "\n\n"].join('')
+  ,  end
+  ,end
+  
+  ,all.each {|e| puts e}
+  ,#+end_example
+  
+  ,*Starting the line here 
+  ,*and continuing here
+  ,to close**
+  
+  ,*Starting the line here 
+  ,/and continuing here
+  ,to close/*
+  
+  ,*Starting the line here 
+  ,=and continuing here
+  ,to close=*
+  
+  ,*Starting the line here 
+  ,~and continuing here
+  ,to close~*
+  
+  ,*Starting the line here 
+  ,_and continuing here
+  ,to close_*
+  
+  ,*Starting the line here 
+  ,+and continuing here
+  ,to close+*
+  
+  ,/Starting the line here 
+  ,*and continuing here
+  ,to close*/
+  
+  ,/Starting the line here 
+  ,/and continuing here
+  ,to close//
+  
+  ,/Starting the line here 
+  ,=and continuing here
+  ,to close=/
+  
+  ,/Starting the line here 
+  ,~and continuing here
+  ,to close~/
+  
+  ,/Starting the line here 
+  ,_and continuing here
+  ,to close_/
+  
+  ,/Starting the line here 
+  ,+and continuing here
+  ,to close+/
+  
+  ,=Starting the line here 
+  ,*and continuing here
+  ,to close*=
+  
+  ,=Starting the line here 
+  ,/and continuing here
+  ,to close/=
+  
+  ,=Starting the line here 
+  ,=and continuing here
+  ,to close==
+  
+  ,=Starting the line here 
+  ,~and continuing here
+  ,to close~=
+  
+  ,=Starting the line here 
+  ,_and continuing here
+  ,to close_=
+  
+  ,=Starting the line here 
+  ,+and continuing here
+  ,to close+=
+  
+  ,~Starting the line here 
+  ,*and continuing here
+  ,to close*~
+  
+  ,~Starting the line here 
+  ,/and continuing here
+  ,to close/~
+  
+  ,~Starting the line here 
+  ,=and continuing here
+  ,to close=~
+  
+  ,~Starting the line here 
+  ,~and continuing here
+  ,to close~~
+  
+  ,~Starting the line here 
+  ,_and continuing here
+  ,to close_~
+  
+  ,~Starting the line here 
+  ,+and continuing here
+  ,to close+~
+  
+  ,_Starting the line here 
+  ,*and continuing here
+  ,to close*_
+  
+  ,_Starting the line here 
+  ,/and continuing here
+  ,to close/_
+  
+  ,_Starting the line here 
+  ,=and continuing here
+  ,to close=_
+  
+  ,_Starting the line here 
+  ,~and continuing here
+  ,to close~_
+  
+  ,_Starting the line here 
+  ,_and continuing here
+  ,to close__
+  
+  ,_Starting the line here 
+  ,+and continuing here
+  ,to close+_
+  
+  ,+Starting the line here 
+  ,*and continuing here
+  ,to close*+
+  
+  ,+Starting the line here 
+  ,/and continuing here
+  ,to close/+
+  
+  ,+Starting the line here 
+  ,=and continuing here
+  ,to close=+
+  
+  ,+Starting the line here 
+  ,~and continuing here
+  ,to close~+
+  
+  ,+Starting the line here 
+  ,_and continuing here
+  ,to close_+
+  
+  ,+Starting the line here 
+  ,+and continuing here
+  ,to close++
+  
+  ,** Together in same paragraph test
+  
+  ,*bold* *bold* *bold*
+  
+  ,/italic/ *bold* /italic/
+  
+  ,=code= *bold* =code=
+  
+  ,~verbatim~ *bold* ~verbatim~
+  
+  ,_underline_  *bold* _underline_ 
+  
+  ,+strikethrough+ *bold* +strikethrough+
+  
+  ,[[http://www.bing.com]] *bold* [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] *bold* [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] *bold* [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> *bold* <http://www.google.com>
+  
+  ,*bold* /italic/ *bold*
+  
+  ,/italic/ /italic/ /italic/
+  
+  ,=code= /italic/ =code=
+  
+  ,~verbatim~ /italic/ ~verbatim~
+  
+  ,_underline_  /italic/ _underline_ 
+  
+  ,+strikethrough+ /italic/ +strikethrough+
+  
+  ,[[http://www.bing.com]] /italic/ [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] /italic/ [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] /italic/ [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> /italic/ <http://www.google.com>
+  
+  ,*bold* =code= *bold*
+  
+  ,/italic/ =code= /italic/
+  
+  ,=code= =code= =code=
+  
+  ,~verbatim~ =code= ~verbatim~
+  
+  ,_underline_  =code= _underline_ 
+  
+  ,+strikethrough+ =code= +strikethrough+
+  
+  ,[[http://www.bing.com]] =code= [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] =code= [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] =code= [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> =code= <http://www.google.com>
+  
+  ,*bold* ~verbatim~ *bold*
+  
+  ,/italic/ ~verbatim~ /italic/
+  
+  ,=code= ~verbatim~ =code=
+  
+  ,~verbatim~ ~verbatim~ ~verbatim~
+  
+  ,_underline_  ~verbatim~ _underline_ 
+  
+  ,+strikethrough+ ~verbatim~ +strikethrough+
+  
+  ,[[http://www.bing.com]] ~verbatim~ [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] ~verbatim~ [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] ~verbatim~ [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> ~verbatim~ <http://www.google.com>
+  
+  ,*bold* _underline_  *bold*
+  
+  ,/italic/ _underline_  /italic/
+  
+  ,=code= _underline_  =code=
+  
+  ,~verbatim~ _underline_  ~verbatim~
+  
+  ,_underline_  _underline_  _underline_ 
+  
+  ,+strikethrough+ _underline_  +strikethrough+
+  
+  ,[[http://www.bing.com]] _underline_  [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] _underline_  [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] _underline_  [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> _underline_  <http://www.google.com>
+  
+  ,*bold* +strikethrough+ *bold*
+  
+  ,/italic/ +strikethrough+ /italic/
+  
+  ,=code= +strikethrough+ =code=
+  
+  ,~verbatim~ +strikethrough+ ~verbatim~
+  
+  ,_underline_  +strikethrough+ _underline_ 
+  
+  ,+strikethrough+ +strikethrough+ +strikethrough+
+  
+  ,[[http://www.bing.com]] +strikethrough+ [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] +strikethrough+ [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] +strikethrough+ [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> +strikethrough+ <http://www.google.com>
+  
+  ,*bold* [[http://www.bing.com]] *bold*
+  
+  ,/italic/ [[http://www.bing.com]] /italic/
+  
+  ,=code= [[http://www.bing.com]] =code=
+  
+  ,~verbatim~ [[http://www.bing.com]] ~verbatim~
+  
+  ,_underline_  [[http://www.bing.com]] _underline_ 
+  
+  ,+strikethrough+ [[http://www.bing.com]] +strikethrough+
+  
+  ,[[http://www.bing.com]] [[http://www.bing.com]] [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] [[http://www.bing.com]] [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]] [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> [[http://www.bing.com]] <http://www.google.com>
+  
+  ,*bold* [[http://www.google.com]] *bold*
+  
+  ,/italic/ [[http://www.google.com]] /italic/
+  
+  ,=code= [[http://www.google.com]] =code=
+  
+  ,~verbatim~ [[http://www.google.com]] ~verbatim~
+  
+  ,_underline_  [[http://www.google.com]] _underline_ 
+  
+  ,+strikethrough+ [[http://www.google.com]] +strikethrough+
+  
+  ,[[http://www.bing.com]] [[http://www.google.com]] [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] [[http://www.google.com]] [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] [[http://www.google.com]] [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> [[http://www.google.com]] <http://www.google.com>
+  
+  ,*bold* [[http://www.xkcd.com][helpful text link]] *bold*
+  
+  ,/italic/ [[http://www.xkcd.com][helpful text link]] /italic/
+  
+  ,=code= [[http://www.xkcd.com][helpful text link]] =code=
+  
+  ,~verbatim~ [[http://www.xkcd.com][helpful text link]] ~verbatim~
+  
+  ,_underline_  [[http://www.xkcd.com][helpful text link]] _underline_ 
+  
+  ,+strikethrough+ [[http://www.xkcd.com][helpful text link]] +strikethrough+
+  
+  ,[[http://www.bing.com]] [[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] [[http://www.xkcd.com][helpful text link]] [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> [[http://www.xkcd.com][helpful text link]] <http://www.google.com>
+  
+  ,*bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold*
+  
+  ,/italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/
+  
+  ,=code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code=
+  
+  ,~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~
+  
+  ,_underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_ 
+  
+  ,+strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+
+  
+  ,[[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>
+  
+  ,*bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold*
+  
+  ,/italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/
+  
+  ,=code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code=
+  
+  ,~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~
+  
+  ,_underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_ 
+  
+  ,+strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+
+  
+  ,[[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>
+  
+  ,*bold* <http://www.google.com> *bold*
+  
+  ,/italic/ <http://www.google.com> /italic/
+  
+  ,=code= <http://www.google.com> =code=
+  
+  ,~verbatim~ <http://www.google.com> ~verbatim~
+  
+  ,_underline_  <http://www.google.com> _underline_ 
+  
+  ,+strikethrough+ <http://www.google.com> +strikethrough+
+  
+  ,[[http://www.bing.com]] <http://www.google.com> [[http://www.bing.com]]
+  
+  ,[[http://www.google.com]] <http://www.google.com> [[http://www.google.com]]
+  
+  ,[[http://www.xkcd.com][helpful text link]] <http://www.google.com> [[http://www.xkcd.com][helpful text link]]
+  
+  ,[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,<http://www.google.com> <http://www.google.com> <http://www.google.com>
+  
+  ,** Together within a table
+  
+  ,| *bold* *bold*                                                        | /italic/ *bold*                                                        | =code= *bold*                                                        | ~verbatim~ *bold*                                                        | _underline_  *bold*                                                        | +strikethrough+ *bold*                                                        | [[http://www.bing.com]] *bold*                                                        | [[http://www.google.com]] *bold*                                                        | [[http://www.xkcd.com][helpful text link]] *bold*                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold*                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold*                                                        | <http://www.google.com> *bold*                                                        |
+  ,| *bold* /italic/                                                      | /italic/ /italic/                                                      | =code= /italic/                                                      | ~verbatim~ /italic/                                                      | _underline_  /italic/                                                      | +strikethrough+ /italic/                                                      | [[http://www.bing.com]] /italic/                                                      | [[http://www.google.com]] /italic/                                                      | [[http://www.xkcd.com][helpful text link]] /italic/                                                      | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/                                                      | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/                                                      | <http://www.google.com> /italic/                                                      |
+  ,| *bold* =code=                                                        | /italic/ =code=                                                        | =code= =code=                                                        | ~verbatim~ =code=                                                        | _underline_  =code=                                                        | +strikethrough+ =code=                                                        | [[http://www.bing.com]] =code=                                                        | [[http://www.google.com]] =code=                                                        | [[http://www.xkcd.com][helpful text link]] =code=                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code=                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code=                                                        | <http://www.google.com> =code=                                                        |
+  ,| *bold* ~verbatim~                                                    | /italic/ ~verbatim~                                                    | =code= ~verbatim~                                                    | ~verbatim~ ~verbatim~                                                    | _underline_  ~verbatim~                                                    | +strikethrough+ ~verbatim~                                                    | [[http://www.bing.com]] ~verbatim~                                                    | [[http://www.google.com]] ~verbatim~                                                    | [[http://www.xkcd.com][helpful text link]] ~verbatim~                                                    | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~                                                    | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~                                                    | <http://www.google.com> ~verbatim~                                                    |
+  ,| *bold* _underline_                                                   | /italic/ _underline_                                                   | =code= _underline_                                                   | ~verbatim~ _underline_                                                   | _underline_  _underline_                                                   | +strikethrough+ _underline_                                                   | [[http://www.bing.com]] _underline_                                                   | [[http://www.google.com]] _underline_                                                   | [[http://www.xkcd.com][helpful text link]] _underline_                                                   | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_                                                   | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_                                                   | <http://www.google.com> _underline_                                                   |
+  ,| *bold* +strikethrough+                                               | /italic/ +strikethrough+                                               | =code= +strikethrough+                                               | ~verbatim~ +strikethrough+                                               | _underline_  +strikethrough+                                               | +strikethrough+ +strikethrough+                                               | [[http://www.bing.com]] +strikethrough+                                               | [[http://www.google.com]] +strikethrough+                                               | [[http://www.xkcd.com][helpful text link]] +strikethrough+                                               | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+                                               | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+                                               | <http://www.google.com> +strikethrough+                                               |
+  ,| *bold* [[http://www.bing.com]]                                           | /italic/ [[http://www.bing.com]]                                           | =code= [[http://www.bing.com]]                                           | ~verbatim~ [[http://www.bing.com]]                                           | _underline_  [[http://www.bing.com]]                                           | +strikethrough+ [[http://www.bing.com]]                                           | [[http://www.bing.com]] [[http://www.bing.com]]                                           | [[http://www.google.com]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]]                                           | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]]                                           | <http://www.google.com> [[http://www.bing.com]]                                           |
+  ,| *bold* [[http://www.google.com]]                                         | /italic/ [[http://www.google.com]]                                         | =code= [[http://www.google.com]]                                         | ~verbatim~ [[http://www.google.com]]                                         | _underline_  [[http://www.google.com]]                                         | +strikethrough+ [[http://www.google.com]]                                         | [[http://www.bing.com]] [[http://www.google.com]]                                         | [[http://www.google.com]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][helpful text link]] [[http://www.google.com]]                                         | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]]                                         | <http://www.google.com> [[http://www.google.com]]                                         |
+  ,| *bold* [[http://www.xkcd.com][helpful text link]]                                             | /italic/ [[http://www.xkcd.com][helpful text link]]                                             | =code= [[http://www.xkcd.com][helpful text link]]                                             | ~verbatim~ [[http://www.xkcd.com][helpful text link]]                                             | _underline_  [[http://www.xkcd.com][helpful text link]]                                             | +strikethrough+ [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.bing.com]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.google.com]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]]                                             | <http://www.google.com> [[http://www.xkcd.com][helpful text link]]                                             |
+  ,| *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | /italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | =code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | ~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | _underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | +strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | <http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] |
+  ,| *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
+  ,| *bold* <http://www.google.com>                                       | /italic/ <http://www.google.com>                                       | =code= <http://www.google.com>                                       | ~verbatim~ <http://www.google.com>                                       | _underline_  <http://www.google.com>                                       | +strikethrough+ <http://www.google.com>                                       | [[http://www.bing.com]] <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       | <http://www.google.com> <http://www.google.com>                                       |
+#+end_src
+
+** NEEDS_EXAMPLES Links
 
 Many kind of links
 
-** TODO Lists
+** NEEDS_EXAMPLES Lists
 * [0/5] Block features
-** TODO Code blocks
-** TODO HTML blocks
-** TODO Quote blocks
-** TODO Comment blocks
-** TODO Unknown blocks
+** NEEDS_EXAMPLES Code blocks
+** NEEDS_EXAMPLES HTML blocks
+** NEEDS_EXAMPLES Quote blocks
+** NEEDS_EXAMPLES Comment blocks
+** NEEDS_EXAMPLES Unknown blocks
 
 This ones are treated as default source blocks.
 
@@ -101,23 +1221,12 @@ documented here:
 http://orgmode.org/manual/In_002dbuffer-settings.html
 http://orgmode.org/manual/Export-settings.html#Export-settings
 
-** TODO Keywords can be changed with options
+** NEEDS_EXAMPLES Keywords can be changed with options
 
-#+begin_src org :tangle options/custom-keywords-in-headlines.org
+#+begin_src org :tangle features/options_custom_keywords_in_headlines.org
 
 #+end_src
 
-** TODO #+TITLE: option
-** TODO #+DESCRIPTION: option
-** TODO #+OPTIONS: todo:t
-* COMMENT
-** Useful sources to compile the features
-
-- Karl Voit made a set of features from org-mode for a workshop
-  https://github.com/novoid/org-mode-workshop
-
-- The Org-mode manual itself I guess
-
-# Local Variables:
-# eval: (setq org-babel-sh-command "bash")
-# mode: auto-fill
+** NEEDS_EXAMPLES #+TITLE: option
+** NEEDS_EXAMPLES #+DESCRIPTION: option
+** NEEDS_EXAMPLES #+OPTIONS: todo:t

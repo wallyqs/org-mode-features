@@ -1,0 +1,87 @@
+* Approach to documenting the features
+
+Each one of the features will have its own headline as an org-babel
+block in org-mode, which after being executed will generate a file with the output
+from the Emacs renderer and the Org-ruby renderer.
+
+** Getting org-mode runtime for Emacs
+
+You will need to fetch =org-mode= features to test the latest set of
+features from the original Emacs implementation.
+
+#+begin_src sh
+git clone git://orgmode.org/org-mode.git
+#+end_src
+
+** org-emacs.sh :: script to export a single file to HTML using Emacs Org mode
+
+The Org-mode implementation located in the folder will be loaded
+in batch mode export to html the example file.
+
+#+begin_src sh :tangle org-emacs.sh :shebang #!/bin/bash
+# FIXME: Detect environment instead of only supporting OS X
+# FIXME: Currently this script has nonly been tested in Org-mode version 7.8.11
+file=$1
+/Applications/Emacs.app/Contents/MacOS/Emacs -Q --batch --eval \
+"(progn (find-file \"$file\") (message (concat \"Exporting $file to HTML\" \" using \" (org-version))) (org-export-as-html 10 nil nil nil t))"
+#+end_src
+
+** org-ruby to export a single HTML file
+
+The same file can be exported to HTML using the Org-ruby implementation as follows:
+
+#+begin_src sh :results output
+bundle exec org-ruby --translate html $file > $file-ruby.html
+#+end_src
+
+** Exporting all the files
+
+The following will apply this to all the =*.org= files within the =features/= folder.
+Should be run at the root of the =org-mode-features= folder.
+
+#+begin_src sh :tangle export_everything.sh :shebang #!/bin/bash
+for file in `ls features/*.org`;
+do
+  echo "---------------- Exporting $file ------------------"
+  echo "with Emacs..."
+  bash ./utils/org-emacs.sh $file
+  echo "with Ruby..."
+  DEBUG=true org-ruby --translate html $file > $file-ruby.html
+done
+#+end_src
+
+** Using Rake to automate this
+
+#+begin_src ruby :tangle ../Rakefile
+desc "Convert to html all the files in feature/* with emacs and org-ruby"
+task :export_all do
+  system("./utils/export_everything.sh")
+end
+
+desc "Use org-ruby to make an html file out of features.org"
+task :render_feature_doc do
+  require 'erb'
+  require 'org-ruby'
+  require 'coderay'
+
+  content = Orgmode::Parser.new(File.open("features.org", 'r').read()).to_html
+
+  File.open("features.html", 'w') do |f|
+    f.puts ERB.new(File.open("utils/feature-doc.erb").read()).result(binding)
+  end
+end
+
+task :default => 'export_all'
+#+end_src
+
+* COMMENT Settings from this org-mode file
+** COMMENT Useful sources to compile the features
+
+- Karl Voit made a set of features from org-mode for a workshop
+  https://github.com/novoid/org-mode-workshop
+
+- The Org-mode manual itself I guess
+
+# Local Variables:
+# eval: (setq org-babel-sh-command "bash")
+# mode: auto-fill

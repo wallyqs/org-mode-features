@@ -1,0 +1,8 @@
+
+* Headline 1
+** Headline 2
+*** Headline 3
+** COMMENT Headline 4 not exported
+*** Headline 5 not exported either
+**** Headline 6 not exported either
+** Headline 7 is exported
