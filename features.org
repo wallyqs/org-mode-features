@@ -32,20 +32,20 @@
 
 By default, the preserved keyword in a headline are TODO and DONE.
 
-#+begin_src org :tangle features/headline_default_keywords.org
+#+BEGIN_SRC org :tangle features/headline_default_keywords.org
   ,* TODO Headline 1
   ,** TODO Headline 2
   ,*** DONE Finished Headline 3
   ,**** TODO Headline 4 
   ,** CANCELED Not a reserved keyword so it will be displayed
-#+end_src
+#+END_SRC
 
 ** IMPLEMENTED COMMENT headlines
 
 COMMENT is a reserved keyword that makes the following headlines
 to be discarded from the rendering output.
 
-#+begin_src org :tangle features/headline_commented.org
+#+BEGIN_SRC org :tangle features/headline_commented.org
   ,* Headline 1
   ,** Headline 2
   ,*** Headline 3
@@ -53,7 +53,7 @@ to be discarded from the rendering output.
   ,*** Headline 5 not exported either
   ,**** Headline 6 not exported either
   ,** Headline 7 is exported  
-#+end_src
+#+END_SRC
 
 ** PARTIALLY_IMPLEMENTED PROPERTIES and LOGBOOK drawers
 
@@ -66,18 +66,18 @@ CLOCKs, CUSTOM_ID are considered to be part of the =:PROPERTIES:= drawer.
 QUOTE is a reserved keyword which makes the headline
 work similar to the =#+begin_quote= block.
 
-#+begin_src org :tangle features/headline_quoted.org
+#+BEGIN_SRC org :tangle features/headline_quoted.org
   ,* Introduction
   ,** QUOTE from Nietzche
   
   ,Love is not consolation, it is light.
-#+end_src
+#+END_SRC
 
 ** IMPLEMENTED Tags in the headlines
 
 Org-mode supports putting tags on a headline like =:TAG:=.
 
-#+begin_src org :tangle features/headline_tags.org
+#+BEGIN_SRC org :tangle features/headline_tags.org
   ,* Headline without tags
   
   ,Hi
@@ -85,7 +85,7 @@ Org-mode supports putting tags on a headline like =:TAG:=.
   ,* Headline with tags                                                :exports:
   
   ,What does this do?
-#+end_src
+#+END_SRC
 
 ** NOT_IMPLEMENTED Progress boxes
 
@@ -102,49 +102,49 @@ In Org mode, it is possible to set priorities by using
 * Emphasis  [3/5] 
 ** PARTIALLY_IMPLEMENTED Markup emphasis [11/11] 
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
   ,* Emphasis that can be used in the markup
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Bold emphasis
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 You can make words *bold*,
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Italic emphasis
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 you can make words /italic/,
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Underlined emphasis
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 you can make works _underlined_, 
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Inline code emphasis
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 you can emphasize words as =code=
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Verbatim emphasis
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 you can emphasize words as ~verbatim~,
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Strike-through emphasis
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 You can emphasize words as +strike-through+,
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Horizontal rule
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
   ,* Horizontal rule is supported after 5 dashes
   
   ,Before the hr line
@@ -152,44 +152,44 @@ You can emphasize words as +strike-through+,
   ,-----
   
   ,After the hr line
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Superscript emphasis
 
 Org mode supports superscript emphasis.
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 You should also be able to use subscripts like A_{0}.
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Superscript emphasis
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 You should also be able to use superscripts like a^{2}.
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Comments
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
 # Lines can be suppresed with #
 ## in order to not render them
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Inline HTML
 **** IMPLEMENTED It is possible to use HTML tags in inline formatting
 
-#+begin_src org features/html.org
+#+BEGIN_SRC org features/html.org
   ,* Emphasis using HTML tags
   
   ,@<b> This is bold @</b>
   ,@<em> This is bold @</em>
   ,@<pre> Hello world... @</pre>
   ,@<code> var a = "Hello world!"; @</code>
-#+end_src
+#+END_SRC
 
 **** IMPLEMENTED Combined with other inline formatting it should be escaped
 
-#+begin_src org features/html.org
+#+BEGIN_SRC org features/html.org
   ,* Cases on which HTML should be escaped
   
   ,This should be escaped: ~<html><script type="text/javascript">(function(){})</script></html>~
@@ -201,22 +201,22 @@ You should also be able to use superscripts like a^{2}.
   
   ,# Matches the first =
   ,This should be escaped: =@<script type="text/javascript">(function(){})@</script>=
-#+end_src
+#+END_SRC
 
 *** Basic example
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
   ,* Basic Example
   
   ,You can make words *bold*, /italic/, _underlined_, =code= and
   ,~verbatim~, and, if you must, ‘+strike-through+’. 
   ,In Emacs Org mode you can also use subscripts like A_0,
   ,and superscripts like a^2.
-#+end_src
+#+END_SRC
 
 *** Complex example
 
-#+begin_src org :tangle features/emphasis.org
+#+BEGIN_SRC org :tangle features/emphasis.org
   ,* Basic inline markup features
   
   ,*bold*
@@ -1019,10 +1019,10 @@ You should also be able to use superscripts like a^{2}.
   ,| *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | /italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | =code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | ~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | _underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | +strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | <http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] |
   ,| *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
   ,| *bold* <http://www.google.com>                                       | /italic/ <http://www.google.com>                                       | =code= <http://www.google.com>                                       | ~verbatim~ <http://www.google.com>                                       | _underline_  <http://www.google.com>                                       | +strikethrough+ <http://www.google.com>                                       | [[http://www.bing.com]] <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       | <http://www.google.com> <http://www.google.com>                                       |
-#+end_src
+#+END_SRC
 ** IMPLEMENTED Entities
 
-#+begin_src org features/entities.org
+#+BEGIN_SRC org features/entities.org
   ,* Entities
   
   ,=Org-ruby= supports "smart double quotes," 'smart single quotes,'
@@ -1403,12 +1403,12 @@ You should also be able to use superscripts like a^{2}.
   
   ,\for \example \this \wont \break
   
-#+end_src
+#+END_SRC
 
 ** IMPLEMENTED Lists [3/4] 
 *** IMPLEMENTED Unordered lists
 **** IMPLEMENTED with -
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Nested lists
   
   , - You can have nested lists
@@ -1419,11 +1419,11 @@ You should also be able to use superscripts like a^{2}.
   , - Another first level item
   ,   - This is a numbered list nested within the unordered list
   ,   - This is another numbered item
-#+end_src
+#+END_SRC
 
 **** IMPLEMENTED with +
 
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Plus sign can be used instead of hyphen
   
   , + You can have nested lists
@@ -1434,11 +1434,11 @@ You should also be able to use superscripts like a^{2}.
   , + Another first level item
   ,   + This is a numbered list nested within the unordered list
   ,   + This is another numbered item
-#+end_src
+#+END_SRC
 
 **** IMPLEMENTED with *
 
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Asterisk can be used for lists
   
   , * You can have nested lists
@@ -1449,11 +1449,11 @@ You should also be able to use superscripts like a^{2}.
   , * Another first level item
   ,   * This is a numbered list nested within the unordered list
   ,   * This is another numbered item
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Ordered lists
 **** IMPLEMENTED with 1., 2., 3., etc...
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Lists can also be numbered as 1., 2., 3., etc..
   
   , 1. You can have nested lists
@@ -1465,11 +1465,11 @@ You should also be able to use superscripts like a^{2}.
   ,    1. This is a numbered list nested within the unordered list
   ,    2. This is another numbered item
   
-#+end_src
+#+END_SRC
 
 **** IMPLEMENTED with 1), 2), 3), etc...
 
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Lists can also be numbered as 1), 2), 3), etc..
   
   , 1) You can have nested lists
@@ -1480,11 +1480,11 @@ You should also be able to use superscripts like a^{2}.
   , 4) Another first level item
   ,    1) This is a numbered list nested within the unordered list
   ,    2) This is another numbered item
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Definition lists
 **** IMPLEMENTED with definition
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Definition items can be used inside a list
   
   ,- Regular list
@@ -1513,11 +1513,11 @@ You should also be able to use superscripts like a^{2}.
   ,  * Key:: MoreKey :: Value (k2)
   , + Case 3
   ,  * :: Key :: Value (k3)  
-#+end_src
+#+END_SRC
 
 **** IMPLEMENTED without definition
 
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Definition List Item without Definition
   
   ,??? will be shown in this case
@@ -1529,11 +1529,11 @@ You should also be able to use superscripts like a^{2}.
   ,   Paragraph :: with :: no value ::
   , + ::
   ,   Paragraph :: with :: no value
-#+end_src
+#+END_SRC
 
 **** IMPLEMENTED exceptions
 
-#+begin_src org :tangle features/lists.org
+#+BEGIN_SRC org :tangle features/lists.org
   ,* Not definition lists
   
   ,The following cases will not be considered as definition lists
@@ -1546,7 +1546,7 @@ You should also be able to use superscripts like a^{2}.
   ,   Value (n4)
   , - Key
   ,   :: Value (n5)
-#+end_src
+#+END_SRC
 *** NOT_IMPLEMENTED Progress boxes
 
 In Org mode, it is possible to display the progress of a set of tasks
@@ -1562,7 +1562,7 @@ using the =[/]= combined with =[ ]=  and =[X]= to mark them as done or not.
 
 Only unsupported feature from Org mode is auto-recognizing URLs.
 
-#+begin_src org :tangle features/links.org
+#+BEGIN_SRC org :tangle features/links.org
   ,* Links implementation
   
   ,- [[http://www.bing.com]]
@@ -1600,10 +1600,10 @@ Only unsupported feature from Org mode is auto-recognizing URLs.
   
   ,This is an angle link <http://google.com> and this is an angle link too <http://google.com>.
   
-#+end_src
+#+END_SRC
 *** IMPLEMENTED Linking to =file:=
 
-#+begin_src org :tangle features/links.org
+#+BEGIN_SRC org :tangle features/links.org
   ,* Links to other org files
   
   ,  This is a link to the ~code-comment.org~ file in the same
@@ -1611,22 +1611,22 @@ Only unsupported feature from Org mode is auto-recognizing URLs.
   ,  want the same behavior in the HTML export.
   
   ,  [[file:code-comment.org][Code Comment]]
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Linking to =file:= with search link
 
-#+begin_src org :tangle features/links.org
+#+BEGIN_SRC org :tangle features/links.org
   ,* Search links
   
   ,  This is a search link into code-comment.org.
   
   ,  [[file:code-comment.org::*Code%20Comment][Code Comment]]
   
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Linking to url
 
-#+begin_src org :tangle features/links.org
+#+BEGIN_SRC org :tangle features/links.org
   ,* Correct handling of .org URIs in HTML markup routine (thanks @rayl!)
   
   ,- [[http://foo.com][foo.com website]]
@@ -1637,19 +1637,19 @@ Only unsupported feature from Org mode is auto-recognizing URLs.
   
   ,- [[http://localhost:4567/foo.org][localhost:4567/foo.org]]
   
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Converting extension to =.html= when link is =.org= file
 
 # NOTE: Consider removing this feature? - @wallyqs
 
-#+begin_src org :tangle features/links.org
+#+BEGIN_SRC org :tangle features/links.org
   ,* In these links, .org is converted to .html
   
   ,- [[file:path.org][file:path.org label]]
   
   ,- [[file:notes/path.org][file:notes/path.org label]]
-#+end_src
+#+END_SRC
 
 ** PARTIALLY_IMPLEMENTED Footnotes
 
@@ -1659,7 +1659,7 @@ Footnotes do not behave exactly the same as in the Org mode version.
 ** PARTIALLY_IMPLEMENTED Code blocks [6/8]
 *** IMPLEMENTED Code block within lists
 
-#+begin_src org features/blocks.org
+#+BEGIN_SRC org features/blocks.org
   ,* Code block within lists
   
   ,- List starts
@@ -1669,11 +1669,11 @@ Footnotes do not behave exactly the same as in the Org mode version.
   ,   #+end_example
   ,- List continues here
   , + and finished here
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Code block indented in list
 
-#+begin_src org features/blocks.org
+#+BEGIN_SRC org features/blocks.org
   ,* Code block indented
   
   ,: - List starts
@@ -1691,27 +1691,27 @@ Footnotes do not behave exactly the same as in the Org mode version.
   ,   #+end_example
   ,- List continues here
   
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Code block indentation level
 
-#+begin_src org features/blocks.org
+#+BEGIN_SRC org features/blocks.org
   ,* Indentation level in example block
   
   ,- Indentation of a begin_example code block
   ,  #+begin_example
   ,    (+ 3 5)
   ,  #+end_example
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Code blocks with unknown lang
 
 This ones are treated as default source blocks.
 
-#+begin_src org :tangle features/blocks.org
+#+BEGIN_SRC org :tangle features/blocks.org
   ,* Unknown block
   
-  ,#+begin_src unknown
+  ,#+BEGIN_SRC unknown
   ,defmodule Enum do
   ,  def map(collection, fun) do
   ,    Enumerable.reduce(collection, [], fn(x, acc) ->
@@ -1719,13 +1719,13 @@ This ones are treated as default source blocks.
   ,    end) |> reverse
   ,  end
   ,end
-  ,#+end_src
-#+end_src
+  ,#+END_SRC
+#+END_SRC
 *** IMPLEMENTED Example block
 
 This code blocks are not highlighted:
 
-#+begin_src org :tangle features/blocks.org
+#+BEGIN_SRC org :tangle features/blocks.org
   ,#+BEGIN_EXAMPLE
   
   ,    def initialize(output)
@@ -1740,12 +1740,12 @@ This code blocks are not highlighted:
   ,    end
   
   ,#+END_EXAMPLE
-#+end_src
+#+END_SRC
 *** IMPLEMENTED Example lines with =:=
 
 Lines that start with =:= will be collected and put within an example block.
 
-#+begin_src org features/markup_basic_emphasis.org
+#+BEGIN_SRC org features/markup_basic_emphasis.org
   ,* Example lines
   
   ,Here is an example
@@ -1754,7 +1754,7 @@ Lines that start with =:= will be collected and put within an example block.
   ,     Here is an example
   ,        : Some example from a text file.
   
-#+end_src
+#+END_SRC
 
 *** NOT_IMPLEMENTED Code block with asterisks at the beginning
 
@@ -1765,14 +1765,14 @@ to the blocks, and then removes it when exporting.
 In the following example, since there is a leading asterisk, after editing, 
 Org mode would add a leading comma to it.
 
-#+begin_src org :tangle features/blocks.org
+#+BEGIN_SRC org :tangle features/blocks.org
   ,* Example with a leading comma
   
-  ,#+begin_src ruby :results output
+  ,#+BEGIN_SRC ruby :results output
   ,  puts "Hello world " \
   ,  ,* 8
-  ,#+end_src
-#+end_src
+  ,#+END_SRC
+#+END_SRC
 
 *** NOT_IMPLEMENTED Code block omission when the #+RESULTS: is immediately before
 
@@ -1781,19 +1781,19 @@ In Emacs Org mode implementation, after executing code with
 and the resulting block is not exported.
 In Org ruby this is not implemented and the result is exported.
 
-#+begin_src org features/blocks.org
+#+BEGIN_SRC org features/blocks.org
   ,* #+RESULTS: block from org-babel
   
-  ,#+begin_src ruby :results output
+  ,#+BEGIN_SRC ruby :results output
   ,puts "Hello " * 8
-  ,#+end_src
+  ,#+END_SRC
   
   ,#+RESULTS:
   ,: Hello Hello Hello Hello Hello Hello Hello Hello 
   
-  ,#+begin_src ruby :results output
+  ,#+BEGIN_SRC ruby :results output
   ,puts "Hello\n" * 12
-  ,#+end_src
+  ,#+END_SRC
   
   ,#+RESULTS:
   ,#+begin_example
@@ -1811,11 +1811,11 @@ In Org ruby this is not implemented and the result is exported.
   ,Hello
   ,#+end_example
   
-#+end_src
+#+END_SRC
 ** IMPLEMENTED Quote blocks
 *** IMPLEMENTED Quote block without emphasis
 
-#+begin_src org :tangle features/blocks.org
+#+BEGIN_SRC org :tangle features/blocks.org
   ,* Quote block
   
   ,Testing that I can have block quotes:
@@ -1829,14 +1829,14 @@ In Org ruby this is not implemented and the result is exported.
   ,#+END_QUOTE
   
   ,And now I'm back to normal text!
-#+end_src
+#+END_SRC
 
 *** IMPLEMENTED Quote block with emphasis and headlines
 
 These are particularly interesting, because they allow =Org mode=
 to be used witing the quote block.
 
-#+begin_src org :tangle features/complex_quote_block.org
+#+BEGIN_SRC org :tangle features/complex_quote_block.org
   ,* Quote block
   
   ,Testing that I can have block quotes:
@@ -1852,26 +1852,26 @@ to be used witing the quote block.
   
   ,** What happens with this?
   
-  ,#+begin_src ruby :results output
+  ,#+BEGIN_SRC ruby :results output
   ,puts "Hello world"
-  ,#+end_src
+  ,#+END_SRC
   
   ,#+END_QUOTE 
-#+end_src
+#+END_SRC
 ** IMPLEMENTED Center blocks
 
-#+begin_src org features/blocks.org
+#+BEGIN_SRC org features/blocks.org
   ,* Center block
   ,not center
   ,#+BEGIN_CENTER
   ,center
   ,#+END_CENTER
   ,not center, again
-#+end_src
+#+END_SRC
 
 ** IMPLEMENTED HTML blocks
 
-#+begin_src org features/html.org
+#+BEGIN_SRC org features/html.org
   ,* Raw html can be embedded
   
   ,The following will render the tag as is:
@@ -1895,11 +1895,11 @@ to be used witing the quote block.
   ,</pre>
   ,</p>
   ,#+end_html  
-#+end_src
+#+END_SRC
 
 ** NOT_IMPLEMENTED Comment blocks
 
-#+begin_src org :tangle features/blocks.org
+#+BEGIN_SRC org :tangle features/blocks.org
   ,* Commented blocks
   
   ,The following will not be rendered because it is a comment block.
@@ -1907,7 +1907,7 @@ to be used witing the quote block.
   ,#+BEGIN_COMMENT
   ,This should not be rendered?
   ,#+END_COMMENT
-#+end_src
+#+END_SRC
 
 * NEEDS_EXAMPLES Tables
 * Export settings in buffer [4/6]
@@ -1920,43 +1920,43 @@ documented here:
 
 ** IMPLEMENTED #+TODO: Customize headline keywords
 
-#+begin_src org :tangle features/options_headline_custom_keywords.org
+#+BEGIN_SRC org :tangle features/options_headline_custom_keywords.org
   ,#+TODO: TODO | DONE CANCELED
   
   ,* DONE Default keyword
   ,* CANCELED Custom keyword
   ,* TODO Default keyword
-#+end_src
+#+END_SRC
 
 ** IMPLEMENTED #+TITLE: option
 
 This option creates a paragraph with the css class =p.title=.
 
-#+begin_src org :features/options_title.org
+#+BEGIN_SRC org :features/options_title.org
   ,#+TITLE:   Export Title
   
   ,This simple org document should get a title from the =TITLE= option at
   ,the front of the file.
-#+end_src
+#+END_SRC
 
 ** IMPLEMENTED #+OPTIONS: todo:t Display headline keywords
 
 In org-ruby, TODO keywords will not be displayed by default.
 In order to do this, it is necessary to specify it in the =#+OPTIONS:=.
 
-#+begin_src org :tangle features/headline_custom_keywords_displayed.org
+#+BEGIN_SRC org :tangle features/headline_custom_keywords_displayed.org
   ,#+TODO: TODO | DONE CANCELED
   ,#+OPTIONS: todo:t
   
   ,* DONE Default keyword
   ,* CANCELED Custom keyword
   ,* TODO Default keyword
-#+end_src
+#+END_SRC
 ** PARTIALLY_IMPLEMENTED #+OPTIONS: f:t Export footnotes
 
 Anchor link output is not correct in this cases when compared to Emacs Org mode.
 
-#+begin_src org :tangle features/options_footnotes.org
+#+BEGIN_SRC org :tangle features/options_footnotes.org
   ,#+TITLE: Footnotes
   ,#+OPTIONS: f:t
   
@@ -1971,11 +1971,11 @@ Anchor link output is not correct in this cases when compared to Emacs Org mode.
   ,Defined in the footnote itself with markup [fn:1:*blub*]
   
   ,[fn:0] Definition of first footnote
-#+end_src
+#+END_SRC
 
 ** IMPLEMENTED #+TAGS: and #+EXPORT_EXCLUDE_TAGS to omit headlines
 
-#+begin_src org features/options_exclude_tags.org
+#+BEGIN_SRC org features/options_exclude_tags.org
   ,#+EXPORT_EXCLUDE_TAGS: exclude noexport
   ,#+TAGS: export noexport
   ,#+LINK_UP:   
@@ -2051,5 +2051,5 @@ Anchor link output is not correct in this cases when compared to Emacs Org mode.
   
   ,     This is also exported!!
   
-#+end_src
+#+END_SRC
 ** NEEDS_EXAMPLES #+DESCRIPTION: option
