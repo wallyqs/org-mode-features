@@ -1,0 +1,24 @@
+* Org mode features
+
+This project attempt at documenting Org mode features 
+and how they map in Org ruby.
+
+Take a look at the =features.org= file to see what is implemented
+and what has not been implemented yet.
+
+Org babel is used throughout the document to create examples
+within the =features/= folder.
+
+The following rake task will try to render the examples using
+both Emacs Lisp and Ruby's implementation of the parser.
+
+#+BEGIN_SRC 
+rake export_all
+#+END_SRC
+
+** Notes
+
+- Currently, the feature examples have been exported
+  with Org mode version 7.8 only
+
+- The rake task only works in OS X, needs to be tweaked too.

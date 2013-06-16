@@ -80,8 +80,6 @@ task :default => 'export_all'
 - Karl Voit made a set of features from org-mode for a workshop
   https://github.com/novoid/org-mode-workshop
 
-- The Org-mode manual itself I guess
-
 - Nicolas Goaziou also summarized the features here
   http://orgmode.org/worg/dev/org-syntax.org
 
