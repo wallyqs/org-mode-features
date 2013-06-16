@@ -1,4 +1,6 @@
 
+** Basic inline markup features
+
 *bold*
 
 /italic/

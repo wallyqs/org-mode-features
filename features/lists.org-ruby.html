@@ -1,0 +1,160 @@
+<h1>Nested lists</h1>
+<ul>
+  <li>You can have nested lists</li>
+  <li>This is first-level
+    <ul>
+      <li>This is a nested item</li>
+      <li>This is another nested item</li>
+    </ul>
+  </li>
+  <li>Back to the first level</li>
+  <li>Another first level item
+    <ul>
+      <li>This is a numbered list nested within the unordered list</li>
+      <li>This is another numbered item</li>
+    </ul>
+  </li>
+</ul>
+<h1>Plus sign can be used instead of hyphen</h1>
+<ul>
+  <li>You can have nested lists</li>
+  <li>This is first-level
+    <ul>
+      <li>This is a nested item</li>
+      <li>This is another nested item</li>
+    </ul>
+  </li>
+  <li>Back to the first level</li>
+  <li>Another first level item
+    <ul>
+      <li>This is a numbered list nested within the unordered list</li>
+      <li>This is another numbered item</li>
+    </ul>
+  </li>
+</ul>
+<h1>Asterisk can be used for lists</h1>
+<ul>
+  <li>You can have nested lists</li>
+  <li>This is first-level
+    <ul>
+      <li>This is a nested item</li>
+      <li>This is another nested item</li>
+    </ul>
+  </li>
+  <li>Back to the first level</li>
+  <li>Another first level item
+    <ul>
+      <li>This is a numbered list nested within the unordered list</li>
+      <li>This is another numbered item</li>
+    </ul>
+  </li>
+</ul>
+<h1>Lists can also be numbered as 1., 2., 3., etc..</h1>
+<ol>
+  <li>You can have nested lists</li>
+  <li>This is first-level
+    <ol>
+      <li>This is a nested item</li>
+      <li>This is another nested item</li>
+    </ol>
+  </li>
+  <li>Back to the first level</li>
+  <li>Another first level item
+    <ol>
+      <li>This is a numbered list nested within the unordered list</li>
+      <li>This is another numbered item</li>
+    </ol>
+  </li>
+</ol>
+<h1>Lists can also be numbered as 1), 2), 3), etc..</h1>
+<ol>
+  <li>You can have nested lists</li>
+  <li>This is first-level
+    <ol>
+      <li>This is a nested item</li>
+      <li>This is another nested item</li>
+    </ol>
+  </li>
+  <li>Back to the first level</li>
+  <li>Another first level item
+    <ol>
+      <li>This is a numbered list nested within the unordered list</li>
+      <li>This is another numbered item</li>
+    </ol>
+  </li>
+</ol>
+<h1>Definition items can be used inside a list</h1>
+<ul>
+  <li>Regular list
+    <dl>
+      <dt>Key</dt><dd>Value (k1)</dd>
+      <dt>Key</dt><dd>Value (k2)</dd>
+      <dt>Key</dt><dd>Value (k3)</dd>
+    </dl>
+  </li>
+  <li>Semicolon as part of key
+    <dl>
+      <dt>K::e::y</dt><dd>Value (k1)</dd>
+      <dt>K::e::y</dt><dd>Value (k2)</dd>
+    </dl>
+  </li>
+  <li>Paragraph break after key
+    <dl>
+      <dt>Key</dt><dd>
+        Value (k1)</dd>
+      <dt>Key</dt><dd>
+        Value (k2)</dd>
+    </dl>
+  </li>
+  <li>Many semicolons in same line
+    <dl>
+      <dt>Key :: Value</dt><dd>Still value (k1)</dd>
+      <dt>Key :: Value</dt><dd>Still value (k2)</dd>
+    </dl>
+  </li>
+  <li>Semicolon placement cases
+    <ul>
+      <li>Case 1
+        <dl>
+          <dt>Key ::MoreKey</dt><dd>Value (k1)</dd>
+        </dl>
+      </li>
+      <li>Case 2
+        <dl>
+          <dt>Key:: MoreKey</dt><dd>Value (k2)</dd>
+        </dl>
+      </li>
+      <li>Case 3
+        <dl>
+          <dt>:: Key</dt><dd>Value (k3)</dd>
+        </dl>
+      </li>
+    </ul>
+  </li>
+</ul>
+<h1>Definition List Item without Definition</h1>
+<p>??? will be shown in this case</p>
+<ul>
+  <li>Example list
+    <dl>
+      <dt>Key :: Value</dt><dd>Still value (k1)
+        Paragraph :: with :: no value</dd>
+      <dt>Key :: Value :: Still value (k1)</dt><dd>
+        Paragraph :: with :: no value ::</dd>
+      <dt>???</dt><dd>
+        Paragraph :: with :: no value</dd>
+    </dl>
+  </li>
+</ul>
+<h1>Not definition lists</h1>
+<p>The following cases will not be considered as definition lists
+  but just regular lists.</p>
+<ul>
+  <li>Key:: Value (n1)</li>
+  <li>Key ::Value (n2)</li>
+  <li>Key::Value (n3)</li>
+  <li>Key::
+    Value (n4)</li>
+  <li>Key
+    :: Value (n5)</li>
+</ul>

@@ -1,0 +1,7 @@
+
+Example with a leading comma
+
+#+begin_src ruby :results output
+  puts "Hello world " \
+  ,* 8
+#+end_src

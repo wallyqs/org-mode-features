@@ -1,2 +1,21 @@
 
+You can make words *bold*,
 
+you can make words /italic/,
+
+you can make works _underlined_,
+
+you can emphasize words as =code=
+
+you can emphasize words as ~verbatim~,
+
+You can emphasize words as +strike-through+,
+
+You should also be able to use subscripts like A_0.
+
+You should also be able to use superscripts like a^2.
+
+You can make words *bold*, /italic/, _underlined_, =code= and
+~verbatim~, and, if you must, ‘+strike-through+’. 
+In Emacs Org mode you can also use subscripts like A_0,
+and superscripts like a^2.

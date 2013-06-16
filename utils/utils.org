@@ -82,6 +82,9 @@ task :default => 'export_all'
 
 - The Org-mode manual itself I guess
 
+- Nicolas Goaziou also summarized the features here
+  http://orgmode.org/worg/dev/org-syntax.org
+
 # Local Variables:
 # eval: (setq org-babel-sh-command "bash")
 # mode: auto-fill

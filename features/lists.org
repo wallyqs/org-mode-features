@@ -1,0 +1,109 @@
+
+* Nested lists
+
+ - You can have nested lists
+ - This is first-level
+   - This is a nested item
+   - This is another nested item
+ - Back to the first level
+ - Another first level item
+   - This is a numbered list nested within the unordered list
+   - This is another numbered item
+
+* Plus sign can be used instead of hyphen
+
+ + You can have nested lists
+ + This is first-level
+   + This is a nested item
+   + This is another nested item
+ + Back to the first level
+ + Another first level item
+   + This is a numbered list nested within the unordered list
+   + This is another numbered item
+
+* Asterisk can be used for lists
+
+ * You can have nested lists
+ * This is first-level
+   * This is a nested item
+   * This is another nested item
+ * Back to the first level
+ * Another first level item
+   * This is a numbered list nested within the unordered list
+   * This is another numbered item
+
+* Lists can also be numbered as 1., 2., 3., etc..
+
+ 1. You can have nested lists
+ 2. This is first-level
+    1. This is a nested item
+    2. This is another nested item
+ 3. Back to the first level
+ 4. Another first level item
+    1. This is a numbered list nested within the unordered list
+    2. This is another numbered item
+
+* Lists can also be numbered as 1), 2), 3), etc..
+
+ 1) You can have nested lists
+ 2) This is first-level
+    1) This is a nested item
+    2) This is another nested item
+ 3) Back to the first level
+ 4) Another first level item
+    1) This is a numbered list nested within the unordered list
+    2) This is another numbered item
+
+* Definition items can be used inside a list
+
+- Regular list
+ + Key :: Value (k1)
+ + Key :: Value (k2)
+ + Key :: Value (k3)
+
+- Semicolon as part of key
+ - K::e::y :: Value (k1)
+ - K::e::y :: Value (k2)
+
+- Paragraph break after key
+ + Key ::
+   Value (k1)
+ + Key ::
+   Value (k2)
+
+- Many semicolons in same line
+ + Key :: Value :: Still value (k1)
+ + Key :: Value :: Still value (k2)
+
+- Semicolon placement cases
+ + Case 1
+  * Key ::MoreKey :: Value (k1)
+ + Case 2
+  * Key:: MoreKey :: Value (k2)
+ + Case 3
+  * :: Key :: Value (k3)
+
+* Definition List Item without Definition
+
+??? will be shown in this case
+
+- Example list
+ + Key :: Value :: Still value (k1)
+   Paragraph :: with :: no value
+ + Key :: Value :: Still value (k1) ::
+   Paragraph :: with :: no value ::
+ + ::
+   Paragraph :: with :: no value
+
+* Not definition lists
+
+The following cases will not be considered as definition lists
+but just regular lists.
+
+ - Key:: Value (n1)
+ - Key ::Value (n2)
+ - Key::Value (n3)
+ - Key::
+   Value (n4)
+ - Key
+   :: Value (n5)

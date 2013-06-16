@@ -5,15 +5,15 @@
 * Introduction
   
   This document is an attempt to describe the current state
-  of known features in Org-mode, along with this development status
-  in the Org-ruby implementation.  This document will not present
+  of known features in Org mode, along with this development status
+  in the Org ruby implementation.  This document will not present
   some corner cases of the implementation, but rather the feature
-  parity status of Org-ruby and the original Emacs Org-mode implementation.
-  Mmore thorough tests on the implementationcan be found within the 
+  parity status of Org-ruby and the original Emacs Org mode implementation.
+  More thorough tests on the implementation can be found within the 
   =specs/= folder along with the expected output.
 
-  Since Org-ruby is mainly an exporter, we are specially
-  interested in the following things from Org-mode:
+  Since Org ruby is mainly an exporter, we are specially
+  interested in the following things from Org mode:
 
   - The markup language itself
 
@@ -23,11 +23,11 @@
     + Drawers (like =:PROPERTIES:=, =:LOGBOOK:=, etc...)
     + Supported markup
 
-  - The several kind of blocks(=#+begin_*=) and how they should be exported
+  - The several kind of blocks(=#+begin_*=) and how they should be exported.
 
   - The in-buffer settings used when exporting like =#+OPTIONS:=, =#+TITLE:=, etc...
 
-* [4/7] Headline features
+* [4/7] Headlines
 ** IMPLEMENTED Keywords that can be used at the beginning of a headline
 
 By default, the preserved keyword in a headline are TODO and DONE.
@@ -378,21 +378,82 @@ Org-mode supports putting tags on a headline like =:TAG:=.
 
 Currently =:PROPERTIES:= drawers are detected and removed from output,
 but nothing else special is done to them.
+CLOCKs, CUSTOM_ID are considered to be part of the =:PROPERTIES:= drawer.
 
-* [1/3] Paragraph markup features
+** NOT_IMPLEMENTED Progress boxes
 
-Markup that can be used within paragraphs, like emphasis, links, examples.
+In Org mode, it is possible to track progress of a set of sub-headlines.
 
-** IMPLEMENTED Text emphasis
+*** NEEDS_EXAMPLES with [%]
+*** NEEDS_EXAMPLES with [/]
+** NOT_IMPLEMENTED Priorities boxes
+
+In Org mode, it is possible to set priorities by using
+=[#A]=, =[#B]=, =[#C]=...
+
+*** NEEDS_EXAMPLES [#A] Priority example
+* [3/5] Emphasis
+** PARTIALLY_IMPLEMENTED Markup emphasis
+*** IMPLEMENTED Bold emphasis
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+You can make words *bold*,
+#+end_src
+
+*** IMPLEMENTED Italic emphasis
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+you can make words /italic/,
+#+end_src
+
+*** IMPLEMENTED Underlined emphasis
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+you can make works _underlined_, 
+#+end_src
+
+*** IMPLEMENTED Inline code emphasis
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+you can emphasize words as =code=
+#+end_src
+
+*** IMPLEMENTED Verbatim emphasis
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+you can emphasize words as ~verbatim~,
+#+end_src
+
+*** IMPLEMENTED Strike-through emphasis
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+You can emphasize words as +strike-through+,
+#+end_src
+
+*** NOT_IMPLEMENTED Superscript emphasis
+
+Org mode supports superscript emphasis.
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+You should also be able to use subscripts like A_0.
+#+end_src
+
+*** NOT_IMPLEMENTED Superscript emphasis
+
+#+begin_src org :tangle features/markup_basic_emphasis.org
+You should also be able to use superscripts like a^2.
+#+end_src
+
+*** Basic example
 
 #+begin_src org :tangle features/markup_basic_emphasis.org
 You can make words *bold*, /italic/, _underlined_, =code= and
-~verbatim~, and, if you must, ‘+strike-through+’. Text in the code and
-verbatim string is not processed for Org mode specific syntax, it is
-exported verbatim.
+~verbatim~, and, if you must, ‘+strike-through+’. 
+In Emacs Org mode you can also use subscripts like A_0,
+and superscripts like a^2.
 #+end_src
 
-*** Complex test of using emphasis in Org-mode
+*** Complex example
 
 #+begin_src org :tangle features/markup_complex_emphasis.org
   ,** Basic inline markup features
@@ -1198,22 +1259,252 @@ exported verbatim.
   ,| *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
   ,| *bold* <http://www.google.com>                                       | /italic/ <http://www.google.com>                                       | =code= <http://www.google.com>                                       | ~verbatim~ <http://www.google.com>                                       | _underline_  <http://www.google.com>                                       | +strikethrough+ <http://www.google.com>                                       | [[http://www.bing.com]] <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       | <http://www.google.com> <http://www.google.com>                                       |
 #+end_src
+** IMPLEMENTED Lists
+*** IMPLEMENTED Unordered lists
+**** IMPLEMENTED with -
+#+begin_src org :tangle features/lists.org
+  ,* Nested lists
+  
+  , - You can have nested lists
+  , - This is first-level
+  ,   - This is a nested item
+  ,   - This is another nested item
+  , - Back to the first level
+  , - Another first level item
+  ,   - This is a numbered list nested within the unordered list
+  ,   - This is another numbered item
+#+end_src
 
-** NEEDS_EXAMPLES Links
+**** IMPLEMENTED with +
 
-Many kind of links
+#+begin_src org :tangle features/lists.org
+  ,* Plus sign can be used instead of hyphen
+  
+  , + You can have nested lists
+  , + This is first-level
+  ,   + This is a nested item
+  ,   + This is another nested item
+  , + Back to the first level
+  , + Another first level item
+  ,   + This is a numbered list nested within the unordered list
+  ,   + This is another numbered item
+#+end_src
 
-** NEEDS_EXAMPLES Lists
-* [0/5] Block features
+**** IMPLEMENTED with *
+
+#+begin_src org :tangle features/lists.org
+  ,* Asterisk can be used for lists
+  
+  , * You can have nested lists
+  , * This is first-level
+  ,   * This is a nested item
+  ,   * This is another nested item
+  , * Back to the first level
+  , * Another first level item
+  ,   * This is a numbered list nested within the unordered list
+  ,   * This is another numbered item
+#+end_src
+
+*** IMPLEMENTED Ordered lists
+**** IMPLEMENTED with 1., 2., 3., etc...
+#+begin_src org :tangle features/lists.org
+  ,* Lists can also be numbered as 1., 2., 3., etc..
+  
+  , 1. You can have nested lists
+  , 2. This is first-level
+  ,    1. This is a nested item
+  ,    2. This is another nested item
+  , 3. Back to the first level
+  , 4. Another first level item
+  ,    1. This is a numbered list nested within the unordered list
+  ,    2. This is another numbered item
+  
+#+end_src
+
+**** IMPLEMENTED with 1), 2), 3), etc...
+
+#+begin_src org :tangle features/lists.org
+  ,* Lists can also be numbered as 1), 2), 3), etc..
+  
+  , 1) You can have nested lists
+  , 2) This is first-level
+  ,    1) This is a nested item
+  ,    2) This is another nested item
+  , 3) Back to the first level
+  , 4) Another first level item
+  ,    1) This is a numbered list nested within the unordered list
+  ,    2) This is another numbered item
+#+end_src
+
+*** IMPLEMENTED Definition lists
+**** IMPLEMENTED with definition
+#+begin_src org :tangle features/lists.org
+  ,* Definition items can be used inside a list
+  
+  ,- Regular list
+  , + Key :: Value (k1)
+  , + Key :: Value (k2)
+  , + Key :: Value (k3)
+  
+  ,- Semicolon as part of key
+  , - K::e::y :: Value (k1)
+  , - K::e::y :: Value (k2)
+  
+  ,- Paragraph break after key
+  , + Key ::
+  ,   Value (k1)
+  , + Key ::
+  ,   Value (k2)
+  
+  ,- Many semicolons in same line
+  , + Key :: Value :: Still value (k1)
+  , + Key :: Value :: Still value (k2)
+  
+  ,- Semicolon placement cases
+  , + Case 1
+  ,  * Key ::MoreKey :: Value (k1)
+  , + Case 2
+  ,  * Key:: MoreKey :: Value (k2)
+  , + Case 3
+  ,  * :: Key :: Value (k3)  
+#+end_src
+
+**** IMPLEMENTED without definition
+
+#+begin_src org :tangle features/lists.org
+  ,* Definition List Item without Definition
+  
+  ,??? will be shown in this case
+  
+  ,- Example list
+  , + Key :: Value :: Still value (k1)
+  ,   Paragraph :: with :: no value
+  , + Key :: Value :: Still value (k1) ::
+  ,   Paragraph :: with :: no value ::
+  , + ::
+  ,   Paragraph :: with :: no value
+#+end_src
+
+**** IMPLEMENTED exceptions
+
+#+begin_src org :tangle features/lists.org
+  ,* Not definition lists
+  
+  ,The following cases will not be considered as definition lists
+  ,but just regular lists.
+  
+  , - Key:: Value (n1)
+  , - Key ::Value (n2)
+  , - Key::Value (n3)
+  , - Key::
+  ,   Value (n4)
+  , - Key
+  ,   :: Value (n5)
+#+end_src
+*** NOT_IMPLEMENTED Progress boxes
+
+In Org mode, it is possible to display the progress of a set of tasks
+using the =[/]= combined with =[ ]=  and =[X]= to mark them as done or not.
+
+**** NOT_IMPLEMENTED with [%]
+**** NOT_IMPLEMENTED with [/]
+
+**** NOT_IMPLEMENTED with [ ]
+**** NOT_IMPLEMENTED with [X]
+** IMPLEMENTED Links
+*** IMPLEMENTED Linking to =file:=
+
+#+begin_src org :tangle features/links.org
+  ,* Links to other org files
+  
+  ,  This is a link to the ~code-comment.org~ file in the same
+  ,  directory. In ~emacs~, if you click it, the other file opens. We
+  ,  want the same behavior in the HTML export.
+  
+  ,  [[file:code-comment.org][Code Comment]]
+#+end_src
+
+*** IMPLEMENTED Linking to =file:= with search link
+
+#+begin_src org :tangle features/links.org
+  ,* Search links
+  
+  ,  This is a search link into code-comment.org.
+  
+  ,  [[file:code-comment.org::*Code%20Comment][Code Comment]]
+  
+#+end_src
+
+*** IMPLEMENTED Linking to url
+
+#+begin_src org :tangle features/links.org
+  ,* Correct handling of .org URIs in HTML markup routine (thanks @rayl!)
+  
+  ,- [[http://foo.com][foo.com website]]
+  
+  ,- [[http://foo.org][foo.org website]]
+  
+  ,- [[http://foo.org/foo.org][foo.org/foo.org]]
+  
+  ,- [[http://localhost:4567/foo.org][localhost:4567/foo.org]]
+  
+#+end_src
+
+*** IMPLEMENTED Converting extension to =.html= when link is =.org= file
+
+# NOTE: Consider removing this feature? - @wallyqs
+
+#+begin_src org :tangle features/links.org
+  ,* In these links, .org is converted to .html
+  
+  ,- [[file:path.org][file:path.org label]]
+  
+  ,- [[file:notes/path.org][file:notes/path.org label]]
+#+end_src
+
+** IMPLEMENTED Horizontal rule
+
+#+begin_src org :tangle features/horizontal_rule.org
+  ,* Horizontal rule is supported after 5 dashes
+  
+  ,Before the hr line
+  
+  ,-----
+  
+  ,After the hr line
+#+end_src
+
+** PARTIALLY_IMPLEMENTED Footnotes
+* [0/6] Blocks
 ** NEEDS_EXAMPLES Code blocks
+*** NOT_IMPLEMENTED Code blocks with asterisks at the beginning
+
+Emacs Org mode has some problems when an asterisk is used at the beginning
+of a block. As a workaround, it detects the these cases and adds a leading comma
+to the blocks, and then removes it when exporting.
+
+In the following example, since there is a leading asterisk, after editing, 
+Org mode would add a leading comma to it.
+
+#+begin_src org :tangle features/code_block_with_leading_asterisk.org
+  ,Example with a leading comma
+  
+  ,#+begin_src ruby :results output
+  ,  puts "Hello world " \
+  ,  ,* 8
+  ,#+end_src
+#+end_src
+
 ** NEEDS_EXAMPLES HTML blocks
 ** NEEDS_EXAMPLES Quote blocks
 ** NEEDS_EXAMPLES Comment blocks
+** NEEDS_EXAMPLES Need to remove the commas
 ** NEEDS_EXAMPLES Unknown blocks
 
 This ones are treated as default source blocks.
 
-* [0/4] Exporting options
+* NEEDS_EXAMPLES Tables
+* [0/4] Exporting OPTIONS
 
 The default export options can be modified slightly as
 documented here:
