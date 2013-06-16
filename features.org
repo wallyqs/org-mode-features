@@ -1,4 +1,4 @@
-#+TITLE: Attempt at documenting Org-mode features and how they map in Org-ruby
+#+TITLE: Attempt at documenting Org mode features and how they map in Org ruby
 #+TODO: NEEDS_EXAMPLES NOT_IMPLEMENTED PARTIALLY_IMPLEMENTED | IMPLEMENTED
 #+OPTIONS: todo:t
 
@@ -27,7 +27,7 @@
 
   - The in-buffer settings used when exporting like =#+OPTIONS:=, =#+TITLE:=, etc...
 
-* [4/7] Headlines
+* Headlines [3/7]
 ** IMPLEMENTED Keywords that can be used at the beginning of a headline
 
 By default, the preserved keyword in a headline are TODO and DONE.
@@ -38,30 +38,6 @@ By default, the preserved keyword in a headline are TODO and DONE.
   ,*** DONE Finished Headline 3
   ,**** TODO Headline 4 
   ,** CANCELED Not a reserved keyword so it will be displayed
-#+end_src
-
-** IMPLEMENTED Keywords can be modified by specifying the =#+TODO= option.
-
-#+begin_src org :tangle features/headline_custom_keywords.org
-  ,#+TODO: TODO | DONE CANCELED
-  
-  ,* DONE Default keyword
-  ,* CANCELED Custom keyword
-  ,* TODO Default keyword
-#+end_src
-
-** IMPLEMENTED Keywords can be displayed with OPTIONS
-
-In org-ruby, TODO keywords will not be displayed by default.
-In order to do this, it is necessary to specify it in the =#+OPTIONS:=.
-
-#+begin_src org :tangle features/headline_custom_keywords_displayed.org
-  ,#+TODO: TODO | DONE CANCELED
-  ,#+OPTIONS: todo:t
-  
-  ,* DONE Default keyword
-  ,* CANCELED Custom keyword
-  ,* TODO Default keyword
 #+end_src
 
 ** IMPLEMENTED COMMENT headlines
@@ -79,6 +55,12 @@ to be discarded from the rendering output.
   ,** Headline 7 is exported  
 #+end_src
 
+** PARTIALLY_IMPLEMENTED PROPERTIES and LOGBOOK drawers
+
+Currently =:PROPERTIES:= drawers are detected and removed from output,
+but nothing else special is done to them.
+CLOCKs, CUSTOM_ID are considered to be part of the =:PROPERTIES:= drawer.
+
 ** NOT_IMPLEMENTED QUOTE headlines
 
 QUOTE is a reserved keyword which makes the headline
@@ -91,7 +73,7 @@ work similar to the =#+begin_quote= block.
   ,Love is not consolation, it is light.
 #+end_src
 
-** NOT_IMPLEMENTED Tags in the headlines
+** IMPLEMENTED Tags in the headlines
 
 Org-mode supports putting tags on a headline like =:TAG:=.
 
@@ -105,12 +87,6 @@ Org-mode supports putting tags on a headline like =:TAG:=.
   ,What does this do?
 #+end_src
 
-** PARTIALLY_IMPLEMENTED PROPERTIES and LOGBOOK drawers
-
-Currently =:PROPERTIES:= drawers are detected and removed from output,
-but nothing else special is done to them.
-CLOCKs, CUSTOM_ID are considered to be part of the =:PROPERTIES:= drawer.
-
 ** NOT_IMPLEMENTED Progress boxes
 
 In Org mode, it is possible to track progress of a set of sub-headlines.
@@ -123,71 +99,125 @@ In Org mode, it is possible to set priorities by using
 =[#A]=, =[#B]=, =[#C]=...
 
 *** NEEDS_EXAMPLES [#A] Priority example
-* [3/5] Emphasis
-** PARTIALLY_IMPLEMENTED Markup emphasis
+* Emphasis  [3/5] 
+** PARTIALLY_IMPLEMENTED Markup emphasis [11/11] 
+
+#+begin_src org :tangle features/emphasis.org
+  ,* Emphasis that can be used in the markup
+#+end_src
+
 *** IMPLEMENTED Bold emphasis
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
+#+begin_src org :tangle features/emphasis.org
 You can make words *bold*,
 #+end_src
 
 *** IMPLEMENTED Italic emphasis
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
+#+begin_src org :tangle features/emphasis.org
 you can make words /italic/,
 #+end_src
 
 *** IMPLEMENTED Underlined emphasis
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
+#+begin_src org :tangle features/emphasis.org
 you can make works _underlined_, 
 #+end_src
 
 *** IMPLEMENTED Inline code emphasis
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
+#+begin_src org :tangle features/emphasis.org
 you can emphasize words as =code=
 #+end_src
 
 *** IMPLEMENTED Verbatim emphasis
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
+#+begin_src org :tangle features/emphasis.org
 you can emphasize words as ~verbatim~,
 #+end_src
 
 *** IMPLEMENTED Strike-through emphasis
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
+#+begin_src org :tangle features/emphasis.org
 You can emphasize words as +strike-through+,
 #+end_src
 
-*** NOT_IMPLEMENTED Superscript emphasis
+*** IMPLEMENTED Horizontal rule
+
+#+begin_src org :tangle features/emphasis.org
+  ,* Horizontal rule is supported after 5 dashes
+  
+  ,Before the hr line
+  
+  ,-----
+  
+  ,After the hr line
+#+end_src
+
+*** IMPLEMENTED Superscript emphasis
 
 Org mode supports superscript emphasis.
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
-You should also be able to use subscripts like A_0.
+#+begin_src org :tangle features/emphasis.org
+You should also be able to use subscripts like A_{0}.
 #+end_src
 
-*** NOT_IMPLEMENTED Superscript emphasis
+*** IMPLEMENTED Superscript emphasis
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
-You should also be able to use superscripts like a^2.
+#+begin_src org :tangle features/emphasis.org
+You should also be able to use superscripts like a^{2}.
+#+end_src
+
+*** IMPLEMENTED Comments
+
+#+begin_src org :tangle features/emphasis.org
+# Lines can be suppresed with #
+## in order to not render them
+#+end_src
+
+*** IMPLEMENTED Inline HTML
+**** IMPLEMENTED It is possible to use HTML tags in inline formatting
+
+#+begin_src org features/html.org
+  ,* Emphasis using HTML tags
+  
+  ,@<b> This is bold @</b>
+  ,@<em> This is bold @</em>
+  ,@<pre> Hello world... @</pre>
+  ,@<code> var a = "Hello world!"; @</code>
+#+end_src
+
+**** IMPLEMENTED Combined with other inline formatting it should be escaped
+
+#+begin_src org features/html.org
+  ,* Cases on which HTML should be escaped
+  
+  ,This should be escaped: ~<html><script type="text/javascript">(function(){})</script></html>~
+  
+  ,# Matches the first =
+  ,This should be escaped: =<html><script type="text/javascript">(function(){})</script></html>=
+  
+  ,This should be escaped: ~@<script type="text/javascript">(function(){})@</script>~
+  
+  ,# Matches the first =
+  ,This should be escaped: =@<script type="text/javascript">(function(){})@</script>=
 #+end_src
 
 *** Basic example
 
-#+begin_src org :tangle features/markup_basic_emphasis.org
-You can make words *bold*, /italic/, _underlined_, =code= and
-~verbatim~, and, if you must, ‘+strike-through+’. 
-In Emacs Org mode you can also use subscripts like A_0,
-and superscripts like a^2.
+#+begin_src org :tangle features/emphasis.org
+  ,* Basic Example
+  
+  ,You can make words *bold*, /italic/, _underlined_, =code= and
+  ,~verbatim~, and, if you must, ‘+strike-through+’. 
+  ,In Emacs Org mode you can also use subscripts like A_0,
+  ,and superscripts like a^2.
 #+end_src
 
 *** Complex example
 
-#+begin_src org :tangle features/markup_complex_emphasis.org
-  ,** Basic inline markup features
+#+begin_src org :tangle features/emphasis.org
+  ,* Basic inline markup features
   
   ,*bold*
   
@@ -990,7 +1020,392 @@ and superscripts like a^2.
   ,| *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
   ,| *bold* <http://www.google.com>                                       | /italic/ <http://www.google.com>                                       | =code= <http://www.google.com>                                       | ~verbatim~ <http://www.google.com>                                       | _underline_  <http://www.google.com>                                       | +strikethrough+ <http://www.google.com>                                       | [[http://www.bing.com]] <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       | <http://www.google.com> <http://www.google.com>                                       |
 #+end_src
-** IMPLEMENTED Lists
+** IMPLEMENTED Entities
+
+#+begin_src org features/entities.org
+  ,* Entities
+  
+  ,=Org-ruby= supports "smart double quotes," 'smart single quotes,'
+  ,apostrophes for contractions like won't and can't, and other
+  ,things... like elipses. Oh -- and dashes.
+  
+  ,Also, ampersands like R&R or &lt; become escaped.
+  
+  ,** <Even in headlines! funner & funner!>
+  
+  ,\laquo They \alpha should \beta be \gamma
+  ,able \delta to \eta exist \theta in \epsilon
+  ,the same line \radic \raquo.
+  
+  ,#+begin_example
+  ,\laquo They won't appear in in example blocks. \raquo
+  ,#+end_example
+  
+  ,#+begin_center
+  ,\lceil \mdash \mdash \mdash \mdash \mdash \mdash \rceil
+  
+  ,Though they appear in center blocks
+  
+  ,\lfloor \mdash \mdash \mdash \mdash \mdash \mdash \rfloor
+  ,#+end_center
+  
+  ,To work they have to be separated, like \hearts \hearts, not like \hearts\hearts.
+  
+  ,** List of entities supported
+  
+  ,- Writing =\Agrave=, results in: \Agrave
+  ,- Writing =\agrave=, results in: \agrave
+  ,- Writing =\Aacute=, results in: \Aacute
+  ,- Writing =\aacute=, results in: \aacute
+  ,- Writing =\Acirc=, results in: \Acirc
+  ,- Writing =\acirc=, results in: \acirc
+  ,- Writing =\Atilde=, results in: \Atilde
+  ,- Writing =\atilde=, results in: \atilde
+  ,- Writing =\Auml=, results in: \Auml
+  ,- Writing =\auml=, results in: \auml
+  ,- Writing =\Aring=, results in: \Aring
+  ,- Writing =\AA=, results in: \AA
+  ,- Writing =\aring=, results in: \aring
+  ,- Writing =\AElig=, results in: \AElig
+  ,- Writing =\aelig=, results in: \aelig
+  ,- Writing =\Ccedil=, results in: \Ccedil
+  ,- Writing =\ccedil=, results in: \ccedil
+  ,- Writing =\Egrave=, results in: \Egrave
+  ,- Writing =\egrave=, results in: \egrave
+  ,- Writing =\Eacute=, results in: \Eacute
+  ,- Writing =\eacute=, results in: \eacute
+  ,- Writing =\Ecirc=, results in: \Ecirc
+  ,- Writing =\ecirc=, results in: \ecirc
+  ,- Writing =\Euml=, results in: \Euml
+  ,- Writing =\euml=, results in: \euml
+  ,- Writing =\Igrave=, results in: \Igrave
+  ,- Writing =\igrave=, results in: \igrave
+  ,- Writing =\Iacute=, results in: \Iacute
+  ,- Writing =\iacute=, results in: \iacute
+  ,- Writing =\Icirc=, results in: \Icirc
+  ,- Writing =\icirc=, results in: \icirc
+  ,- Writing =\Iuml=, results in: \Iuml
+  ,- Writing =\iuml=, results in: \iuml
+  ,- Writing =\Ntilde=, results in: \Ntilde
+  ,- Writing =\ntilde=, results in: \ntilde
+  ,- Writing =\Ograve=, results in: \Ograve
+  ,- Writing =\ograve=, results in: \ograve
+  ,- Writing =\Oacute=, results in: \Oacute
+  ,- Writing =\oacute=, results in: \oacute
+  ,- Writing =\Ocirc=, results in: \Ocirc
+  ,- Writing =\ocirc=, results in: \ocirc
+  ,- Writing =\Otilde=, results in: \Otilde
+  ,- Writing =\otilde=, results in: \otilde
+  ,- Writing =\Ouml=, results in: \Ouml
+  ,- Writing =\ouml=, results in: \ouml
+  ,- Writing =\Oslash=, results in: \Oslash
+  ,- Writing =\oslash=, results in: \oslash
+  ,- Writing =\OElig=, results in: \OElig
+  ,- Writing =\oelig=, results in: \oelig
+  ,- Writing =\Scaron=, results in: \Scaron
+  ,- Writing =\scaron=, results in: \scaron
+  ,- Writing =\szlig=, results in: \szlig
+  ,- Writing =\Ugrave=, results in: \Ugrave
+  ,- Writing =\ugrave=, results in: \ugrave
+  ,- Writing =\Uacute=, results in: \Uacute
+  ,- Writing =\uacute=, results in: \uacute
+  ,- Writing =\Ucirc=, results in: \Ucirc
+  ,- Writing =\ucirc=, results in: \ucirc
+  ,- Writing =\Uuml=, results in: \Uuml
+  ,- Writing =\uuml=, results in: \uuml
+  ,- Writing =\Yacute=, results in: \Yacute
+  ,- Writing =\yacute=, results in: \yacute
+  ,- Writing =\Yuml=, results in: \Yuml
+  ,- Writing =\yuml=, results in: \yuml
+  ,- Writing =\fnof=, results in: \fnof
+  ,- Writing =\real=, results in: \real
+  ,- Writing =\image=, results in: \image
+  ,- Writing =\weierp=, results in: \weierp
+  ,- Writing =\Alpha=, results in: \Alpha
+  ,- Writing =\alpha=, results in: \alpha
+  ,- Writing =\Beta=, results in: \Beta
+  ,- Writing =\beta=, results in: \beta
+  ,- Writing =\Gamma=, results in: \Gamma
+  ,- Writing =\gamma=, results in: \gamma
+  ,- Writing =\Delta=, results in: \Delta
+  ,- Writing =\delta=, results in: \delta
+  ,- Writing =\Epsilon=, results in: \Epsilon
+  ,- Writing =\epsilon=, results in: \epsilon
+  ,- Writing =\varepsilon=, results in: \varepsilon
+  ,- Writing =\Zeta=, results in: \Zeta
+  ,- Writing =\zeta=, results in: \zeta
+  ,- Writing =\Eta=, results in: \Eta
+  ,- Writing =\eta=, results in: \eta
+  ,- Writing =\Theta=, results in: \Theta
+  ,- Writing =\theta=, results in: \theta
+  ,- Writing =\thetasym=, results in: \thetasym
+  ,- Writing =\vartheta=, results in: \vartheta
+  ,- Writing =\Iota=, results in: \Iota
+  ,- Writing =\iota=, results in: \iota
+  ,- Writing =\Kappa=, results in: \Kappa
+  ,- Writing =\kappa=, results in: \kappa
+  ,- Writing =\Lambda=, results in: \Lambda
+  ,- Writing =\lambda=, results in: \lambda
+  ,- Writing =\Mu=, results in: \Mu
+  ,- Writing =\mu=, results in: \mu
+  ,- Writing =\nu=, results in: \nu
+  ,- Writing =\Nu=, results in: \Nu
+  ,- Writing =\Xi=, results in: \Xi
+  ,- Writing =\xi=, results in: \xi
+  ,- Writing =\Omicron=, results in: \Omicron
+  ,- Writing =\omicron=, results in: \omicron
+  ,- Writing =\Pi=, results in: \Pi
+  ,- Writing =\pi=, results in: \pi
+  ,- Writing =\Rho=, results in: \Rho
+  ,- Writing =\rho=, results in: \rho
+  ,- Writing =\Sigma=, results in: \Sigma
+  ,- Writing =\sigma=, results in: \sigma
+  ,- Writing =\sigmaf=, results in: \sigmaf
+  ,- Writing =\varsigma=, results in: \varsigma
+  ,- Writing =\Tau=, results in: \Tau
+  ,- Writing =\Upsilon=, results in: \Upsilon
+  ,- Writing =\upsih=, results in: \upsih
+  ,- Writing =\upsilon=, results in: \upsilon
+  ,- Writing =\Phi=, results in: \Phi
+  ,- Writing =\phi=, results in: \phi
+  ,- Writing =\Chi=, results in: \Chi
+  ,- Writing =\chi=, results in: \chi
+  ,- Writing =\acutex=, results in: \acutex
+  ,- Writing =\Psi=, results in: \Psi
+  ,- Writing =\psi=, results in: \psi
+  ,- Writing =\tau=, results in: \tau
+  ,- Writing =\Omega=, results in: \Omega
+  ,- Writing =\omega=, results in: \omega
+  ,- Writing =\piv=, results in: \piv
+  ,- Writing =\partial=, results in: \partial
+  ,- Writing =\alefsym=, results in: \alefsym
+  ,- Writing =\ETH=, results in: \ETH
+  ,- Writing =\eth=, results in: \eth
+  ,- Writing =\THORN=, results in: \THORN
+  ,- Writing =\thorn=, results in: \thorn
+  ,- Writing =\dots=, results in: \dots
+  ,- Writing =\hellip=, results in: \hellip
+  ,- Writing =\middot=, results in: \middot
+  ,- Writing =\iexcl=, results in: \iexcl
+  ,- Writing =\iquest=, results in: \iquest
+  ,- Writing =\shy=, results in: \shy
+  ,- Writing =\ndash=, results in: \ndash
+  ,- Writing =\mdash=, results in: \mdash
+  ,- Writing =\quot=, results in: \quot
+  ,- Writing =\acute=, results in: \acute
+  ,- Writing =\ldquo=, results in: \ldquo
+  ,- Writing =\rdquo=, results in: \rdquo
+  ,- Writing =\bdquo=, results in: \bdquo
+  ,- Writing =\lsquo=, results in: \lsquo
+  ,- Writing =\rsquo=, results in: \rsquo
+  ,- Writing =\sbquo=, results in: \sbquo
+  ,- Writing =\laquo=, results in: \laquo
+  ,- Writing =\raquo=, results in: \raquo
+  ,- Writing =\lsaquo=, results in: \lsaquo
+  ,- Writing =\rsaquo=, results in: \rsaquo
+  ,- Writing =\circ=, results in: \circ
+  ,- Writing =\vert=, results in: \vert
+  ,- Writing =\brvbar=, results in: \brvbar
+  ,- Writing =\sect=, results in: \sect
+  ,- Writing =\amp=, results in: \amp
+  ,- Writing =\lt=, results in: \lt
+  ,- Writing =\gt=, results in: \gt
+  ,- Writing =\tilde=, results in: \tilde
+  ,- Writing =\slash=, results in: \slash
+  ,- Writing =\plus=, results in: \plus
+  ,- Writing =\under=, results in: \under
+  ,- Writing =\equal=, results in: \equal
+  ,- Writing =\asciicirc=, results in: \asciicirc
+  ,- Writing =\dagger=, results in: \dagger
+  ,- Writing =\Dagger=, results in: \Dagger
+  ,- Writing =\nbsp=, results in: \nbsp
+  ,- Writing =\ensp=, results in: \ensp
+  ,- Writing =\emsp=, results in: \emsp
+  ,- Writing =\thinsp=, results in: \thinsp
+  ,- Writing =\curren=, results in: \curren
+  ,- Writing =\cent=, results in: \cent
+  ,- Writing =\pound=, results in: \pound
+  ,- Writing =\yen=, results in: \yen
+  ,- Writing =\euro=, results in: \euro
+  ,- Writing =\EUR=, results in: \EUR
+  ,- Writing =\EURdig=, results in: \EURdig
+  ,- Writing =\EURhv=, results in: \EURhv
+  ,- Writing =\EURcr=, results in: \EURcr
+  ,- Writing =\EURtm=, results in: \EURtm
+  ,- Writing =\copy=, results in: \copy
+  ,- Writing =\reg=, results in: \reg
+  ,- Writing =\trade=, results in: \trade
+  ,- Writing =\minus=, results in: \minus
+  ,- Writing =\pm=, results in: \pm
+  ,- Writing =\plusmn=, results in: \plusmn
+  ,- Writing =\times=, results in: \times
+  ,- Writing =\frasl=, results in: \frasl
+  ,- Writing =\div=, results in: \div
+  ,- Writing =\frac12=, results in: \frac12
+  ,- Writing =\frac14=, results in: \frac14
+  ,- Writing =\frac34=, results in: \frac34
+  ,- Writing =\permil=, results in: \permil
+  ,- Writing =\sup1=, results in: \sup1
+  ,- Writing =\sup2=, results in: \sup2
+  ,- Writing =\sup3=, results in: \sup3
+  ,- Writing =\radic=, results in: \radic
+  ,- Writing =\sum=, results in: \sum
+  ,- Writing =\prod=, results in: \prod
+  ,- Writing =\micro=, results in: \micro
+  ,- Writing =\macr=, results in: \macr
+  ,- Writing =\deg=, results in: \deg
+  ,- Writing =\prime=, results in: \prime
+  ,- Writing =\Prime=, results in: \Prime
+  ,- Writing =\infin=, results in: \infin
+  ,- Writing =\infty=, results in: \infty
+  ,- Writing =\prop=, results in: \prop
+  ,- Writing =\proptp=, results in: \proptp
+  ,- Writing =\not=, results in: \not
+  ,- Writing =\neg=, results in: \neg
+  ,- Writing =\land=, results in: \land
+  ,- Writing =\wedge=, results in: \wedge
+  ,- Writing =\lor=, results in: \lor
+  ,- Writing =\vee=, results in: \vee
+  ,- Writing =\cap=, results in: \cap
+  ,- Writing =\cup=, results in: \cup
+  ,- Writing =\int=, results in: \int
+  ,- Writing =\there4=, results in: \there4
+  ,- Writing =\sim=, results in: \sim
+  ,- Writing =\cong=, results in: \cong
+  ,- Writing =\simeq=, results in: \simeq
+  ,- Writing =\asymp=, results in: \asymp
+  ,- Writing =\approx=, results in: \approx
+  ,- Writing =\ne=, results in: \ne
+  ,- Writing =\neq=, results in: \neq
+  ,- Writing =\equiv=, results in: \equiv
+  ,- Writing =\le=, results in: \le
+  ,- Writing =\ge=, results in: \ge
+  ,- Writing =\sub=, results in: \sub
+  ,- Writing =\subset=, results in: \subset
+  ,- Writing =\sup=, results in: \sup
+  ,- Writing =\supset=, results in: \supset
+  ,- Writing =\nsub=, results in: \nsub
+  ,- Writing =\sube=, results in: \sube
+  ,- Writing =\nsup=, results in: \nsup
+  ,- Writing =\supe=, results in: \supe
+  ,- Writing =\forall=, results in: \forall
+  ,- Writing =\exist=, results in: \exist
+  ,- Writing =\exists=, results in: \exists
+  ,- Writing =\empty=, results in: \empty
+  ,- Writing =\emptyset=, results in: \emptyset
+  ,- Writing =\isin=, results in: \isin
+  ,- Writing =\in=, results in: \in
+  ,- Writing =\notin=, results in: \notin
+  ,- Writing =\ni=, results in: \ni
+  ,- Writing =\nabla=, results in: \nabla
+  ,- Writing =\ang=, results in: \ang
+  ,- Writing =\angle=, results in: \angle
+  ,- Writing =\perp=, results in: \perp
+  ,- Writing =\sdot=, results in: \sdot
+  ,- Writing =\cdot=, results in: \cdot
+  ,- Writing =\lceil=, results in: \lceil
+  ,- Writing =\rceil=, results in: \rceil
+  ,- Writing =\lfloor=, results in: \lfloor
+  ,- Writing =\rfloor=, results in: \rfloor
+  ,- Writing =\lang=, results in: \lang
+  ,- Writing =\rang=, results in: \rang
+  ,- Writing =\larr=, results in: \larr
+  ,- Writing =\leftarrow=, results in: \leftarrow
+  ,- Writing =\gets=, results in: \gets
+  ,- Writing =\lArr=, results in: \lArr
+  ,- Writing =\Leftarrow=, results in: \Leftarrow
+  ,- Writing =\uarr=, results in: \uarr
+  ,- Writing =\uparrow=, results in: \uparrow
+  ,- Writing =\uArr=, results in: \uArr
+  ,- Writing =\Uparrow=, results in: \Uparrow
+  ,- Writing =\rarr=, results in: \rarr
+  ,- Writing =\to=, results in: \to
+  ,- Writing =\rightarrow=, results in: \rightarrow
+  ,- Writing =\rArr=, results in: \rArr
+  ,- Writing =\Rightarrow=, results in: \Rightarrow
+  ,- Writing =\darr=, results in: \darr
+  ,- Writing =\downarrow=, results in: \downarrow
+  ,- Writing =\dArr=, results in: \dArr
+  ,- Writing =\Downarrow=, results in: \Downarrow
+  ,- Writing =\harr=, results in: \harr
+  ,- Writing =\leftrightarrow=, results in: \leftrightarrow
+  ,- Writing =\hArr=, results in: \hArr
+  ,- Writing =\Leftrightarrow=, results in: \Leftrightarrow
+  ,- Writing =\crarr=, results in: \crarr
+  ,- Writing =\hookleftarrow=, results in: \hookleftarrow
+  ,- Writing =\arccos=, results in: \arccos
+  ,- Writing =\arcsin=, results in: \arcsin
+  ,- Writing =\arctan=, results in: \arctan
+  ,- Writing =\arg=, results in: \arg
+  ,- Writing =\cos=, results in: \cos
+  ,- Writing =\cosh=, results in: \cosh
+  ,- Writing =\cot=, results in: \cot
+  ,- Writing =\coth=, results in: \coth
+  ,- Writing =\csc=, results in: \csc
+  ,- Writing =\det=, results in: \det
+  ,- Writing =\dim=, results in: \dim
+  ,- Writing =\exp=, results in: \exp
+  ,- Writing =\gcd=, results in: \gcd
+  ,- Writing =\hom=, results in: \hom
+  ,- Writing =\inf=, results in: \inf
+  ,- Writing =\ker=, results in: \ker
+  ,- Writing =\lg=, results in: \lg
+  ,- Writing =\lim=, results in: \lim
+  ,- Writing =\liminf=, results in: \liminf
+  ,- Writing =\limsup=, results in: \limsup
+  ,- Writing =\ln=, results in: \ln
+  ,- Writing =\log=, results in: \log
+  ,- Writing =\max=, results in: \max
+  ,- Writing =\min=, results in: \min
+  ,- Writing =\Pr=, results in: \Pr
+  ,- Writing =\sec=, results in: \sec
+  ,- Writing =\sin=, results in: \sin
+  ,- Writing =\sinh=, results in: \sinh
+  ,- Writing =\tan=, results in: \tan
+  ,- Writing =\tanh=, results in: \tanh
+  ,- Writing =\bull=, results in: \bull
+  ,- Writing =\bullet=, results in: \bullet
+  ,- Writing =\star=, results in: \star
+  ,- Writing =\lowast=, results in: \lowast
+  ,- Writing =\ast=, results in: \ast
+  ,- Writing =\odot=, results in: \odot
+  ,- Writing =\oplus=, results in: \oplus
+  ,- Writing =\otimes=, results in: \otimes
+  ,- Writing =\checkmark=, results in: \checkmark
+  ,- Writing =\para=, results in: \para
+  ,- Writing =\ordf=, results in: \ordf
+  ,- Writing =\ordm=, results in: \ordm
+  ,- Writing =\cedil=, results in: \cedil
+  ,- Writing =\oline=, results in: \oline
+  ,- Writing =\uml=, results in: \uml
+  ,- Writing =\zwnj=, results in: \zwnj
+  ,- Writing =\zwj=, results in: \zwj
+  ,- Writing =\lrm=, results in: \lrm
+  ,- Writing =\rlm=, results in: \rlm
+  ,- Writing =\smile=, results in: \smile
+  ,- Writing =\smiley=, results in: \smiley
+  ,- Writing =\blacksmile=, results in: \blacksmile
+  ,- Writing =\sad=, results in: \sad
+  ,- Writing =\clubs=, results in: \clubs
+  ,- Writing =\clubsuit=, results in: \clubsuit
+  ,- Writing =\spades=, results in: \spades
+  ,- Writing =\spadesuit=, results in: \spadesuit
+  ,- Writing =\hearts=, results in: \hearts
+  ,- Writing =\heartsuit=, results in: \heartsuit
+  ,- Writing =\diams=, results in: \diams
+  ,- Writing =\diamondsuit=, results in: \diamondsuit
+  ,- Writing =\Diamond=, results in: \Diamond
+  ,- Writing =\loz=, results in: \loz
+  
+  ,* Some special cases
+  
+  ,In case nothing matches, the string is returned as is.
+  
+  ,\for \example \this \wont \break
+  
+#+end_src
+
+** IMPLEMENTED Lists [3/4] 
 *** IMPLEMENTED Unordered lists
 **** IMPLEMENTED with -
 #+begin_src org :tangle features/lists.org
@@ -1142,7 +1557,50 @@ using the =[/]= combined with =[ ]=  and =[X]= to mark them as done or not.
 
 **** NOT_IMPLEMENTED with [ ]
 **** NOT_IMPLEMENTED with [X]
-** IMPLEMENTED Links
+** IMPLEMENTED Links [4/5] 
+*** PARTIALLY_IMPLEMENTED Basic links
+
+Only unsupported feature from Org mode is auto-recognizing URLs.
+
+#+begin_src org :tangle features/links.org
+  ,* Links implementation
+  
+  ,- [[http://www.bing.com]]
+  ,- [[http://www.google.com]]
+  ,- http://www.gmail.com
+  
+  ,Note the last one *is not* a link, as the source doesn't include it in
+  ,double-brackets and I don't auto-recognize URLs.
+  
+  ,I should also handle links with [[http://www.xkcd.com][helpful text]].
+  
+  ,Helpful addition from [[https://github.com/punchagan][punchagan]], we now
+  ,recognize when the link goes to an image and make the link anchor be the
+  ,image, like this:
+  
+  ,- [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+  
+  ,Also, if you make the descriptive text be an image, then it will get formatted
+  ,with an image tag, like so:
+  
+  ,- [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+  
+  ,Helpful addition from [[https://github.com/wallyqs][wallyqs]]:
+  
+  ,While "naked" links don't work (like http://www.google.com), angle links
+  ,do work. This should look like a link: <http://www.google.com>.
+  
+  ,It should be possible to use both kind of links on the same paragraph:
+  
+  ,This is an angle link <http://google.com> and this is a bracket link [[https://github.com/bdewey/org-ruby][to a repository]].
+  
+  ,This is a bracket link [[https://github.com/bdewey/org-ruby][to a repository]] and this is an angle link <http://google.com>.
+  
+  ,This is a bracket link [[https://github.com/bdewey/org-ruby][to a repository]] and this is a bracket link too  [[https://github.com/bdewey/org-ruby][to a repository]].
+  
+  ,This is an angle link <http://google.com> and this is an angle link too <http://google.com>.
+  
+#+end_src
 *** IMPLEMENTED Linking to =file:=
 
 #+begin_src org :tangle features/links.org
@@ -1193,22 +1651,112 @@ using the =[/]= combined with =[ ]=  and =[X]= to mark them as done or not.
   ,- [[file:notes/path.org][file:notes/path.org label]]
 #+end_src
 
-** IMPLEMENTED Horizontal rule
+** PARTIALLY_IMPLEMENTED Footnotes
 
-#+begin_src org :tangle features/horizontal_rule.org
-  ,* Horizontal rule is supported after 5 dashes
+Footnotes do not behave exactly the same as in the Org mode version.
+
+* Blocks    [3/5] 
+** PARTIALLY_IMPLEMENTED Code blocks [6/8]
+*** IMPLEMENTED Code block within lists
+
+#+begin_src org features/blocks.org
+  ,* Code block within lists
   
-  ,Before the hr line
-  
-  ,-----
-  
-  ,After the hr line
+  ,- List starts
+  , + Block without indentation
+  ,   #+begin_example
+  ,puts "test"
+  ,   #+end_example
+  ,- List continues here
+  , + and finished here
 #+end_src
 
-** PARTIALLY_IMPLEMENTED Footnotes
-* [0/6] Blocks
-** NEEDS_EXAMPLES Code blocks
-*** NOT_IMPLEMENTED Code blocks with asterisks at the beginning
+*** IMPLEMENTED Code block indented in list
+
+#+begin_src org features/blocks.org
+  ,* Code block indented
+  
+  ,: - List starts
+  ,:  + Block without indentation
+  ,:    #+begin_example ruby
+  ,:   puts "test"
+  ,:    #+end_example
+  ,: - List continues here
+  ,:  + and finished here
+  
+  ,- List starts
+  , + Block without indentation
+  ,   #+begin_example
+  ,  puts "test"
+  ,   #+end_example
+  ,- List continues here
+  
+#+end_src
+
+*** IMPLEMENTED Code block indentation level
+
+#+begin_src org features/blocks.org
+  ,* Indentation level in example block
+  
+  ,- Indentation of a begin_example code block
+  ,  #+begin_example
+  ,    (+ 3 5)
+  ,  #+end_example
+#+end_src
+
+*** IMPLEMENTED Code blocks with unknown lang
+
+This ones are treated as default source blocks.
+
+#+begin_src org :tangle features/blocks.org
+  ,* Unknown block
+  
+  ,#+begin_src unknown
+  ,defmodule Enum do
+  ,  def map(collection, fun) do
+  ,    Enumerable.reduce(collection, [], fn(x, acc) ->
+  ,      [fun.(x, acc)|acc]
+  ,    end) |> reverse
+  ,  end
+  ,end
+  ,#+end_src
+#+end_src
+*** IMPLEMENTED Example block
+
+This code blocks are not highlighted:
+
+#+begin_src org :tangle features/blocks.org
+  ,#+BEGIN_EXAMPLE
+  
+  ,    def initialize(output)
+  ,      @output = output
+  ,      @buffer = ""
+  ,      @output_type = :start
+  ,      @list_indent_stack = []
+  ,      @paragraph_modifier = nil
+  
+  ,      @logger = Logger.new(STDERR)
+  ,      @logger.level = Logger::WARN
+  ,    end
+  
+  ,#+END_EXAMPLE
+#+end_src
+*** IMPLEMENTED Example lines with =:=
+
+Lines that start with =:= will be collected and put within an example block.
+
+#+begin_src org features/markup_basic_emphasis.org
+  ,* Example lines
+  
+  ,Here is an example
+  ,: Some example from a text file.
+  
+  ,     Here is an example
+  ,        : Some example from a text file.
+  
+#+end_src
+
+*** NOT_IMPLEMENTED Code block with asterisks at the beginning
 
 Emacs Org mode has some problems when an asterisk is used at the beginning
 of a block. As a workaround, it detects the these cases and adds a leading comma
@@ -1217,8 +1765,8 @@ to the blocks, and then removes it when exporting.
 In the following example, since there is a leading asterisk, after editing, 
 Org mode would add a leading comma to it.
 
-#+begin_src org :tangle features/code_block_with_leading_asterisk.org
-  ,Example with a leading comma
+#+begin_src org :tangle features/blocks.org
+  ,* Example with a leading comma
   
   ,#+begin_src ruby :results output
   ,  puts "Hello world " \
@@ -1226,29 +1774,282 @@ Org mode would add a leading comma to it.
   ,#+end_src
 #+end_src
 
-** NEEDS_EXAMPLES HTML blocks
-** NEEDS_EXAMPLES Quote blocks
-** NEEDS_EXAMPLES Comment blocks
-** NEEDS_EXAMPLES Need to remove the commas
-** NEEDS_EXAMPLES Unknown blocks
+*** NOT_IMPLEMENTED Code block omission when the #+RESULTS: is immediately before
 
-This ones are treated as default source blocks.
+In Emacs Org mode implementation, after executing code with
+=org-babel=, the result is printed along with a =#+RESULTS:= line,
+and the resulting block is not exported.
+In Org ruby this is not implemented and the result is exported.
+
+#+begin_src org features/blocks.org
+  ,* #+RESULTS: block from org-babel
+  
+  ,#+begin_src ruby :results output
+  ,puts "Hello " * 8
+  ,#+end_src
+  
+  ,#+RESULTS:
+  ,: Hello Hello Hello Hello Hello Hello Hello Hello 
+  
+  ,#+begin_src ruby :results output
+  ,puts "Hello\n" * 12
+  ,#+end_src
+  
+  ,#+RESULTS:
+  ,#+begin_example
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,Hello
+  ,#+end_example
+  
+#+end_src
+** IMPLEMENTED Quote blocks
+*** IMPLEMENTED Quote block without emphasis
+
+#+begin_src org :tangle features/blocks.org
+  ,* Quote block
+  
+  ,Testing that I can have block quotes:
+  
+  ,#+BEGIN_QUOTE
+  
+  ,/Example:/
+  
+  ,This is blockquote text.
+  
+  ,#+END_QUOTE
+  
+  ,And now I'm back to normal text!
+#+end_src
+
+*** IMPLEMENTED Quote block with emphasis and headlines
+
+These are particularly interesting, because they allow =Org mode=
+to be used witing the quote block.
+
+#+begin_src org :tangle features/complex_quote_block.org
+  ,* Quote block
+  
+  ,Testing that I can have block quotes:
+  
+  ,#+BEGIN_QUOTE
+  
+  ,Quote begins, but then gets a headline:
+  
+  ,* Example
+  ,** Subheadlines here
+  
+  ,: This is blockquote text.
+  
+  ,** What happens with this?
+  
+  ,#+begin_src ruby :results output
+  ,puts "Hello world"
+  ,#+end_src
+  
+  ,#+END_QUOTE 
+#+end_src
+** IMPLEMENTED Center blocks
+
+#+begin_src org features/blocks.org
+  ,* Center block
+  ,not center
+  ,#+BEGIN_CENTER
+  ,center
+  ,#+END_CENTER
+  ,not center, again
+#+end_src
+
+** IMPLEMENTED HTML blocks
+
+#+begin_src org features/html.org
+  ,* Raw html can be embedded
+  
+  ,The following will render the tag as is:
+  
+  ,#+html: <code> Hello </code>
+  
+  ,And this will render some Javascript, and execute it.
+  
+  ,#+html: <script> alert('hello') </script>
+  
+  ,** HTML blocks
+  
+  ,They behave as follows:
+  
+  ,#+begin_html
+  ,<p style="color:#cafe12; background-color:#999999">
+  ,<pre>
+  
+  ,Hello.
+  
+  ,</pre>
+  ,</p>
+  ,#+end_html  
+#+end_src
+
+** NOT_IMPLEMENTED Comment blocks
+
+#+begin_src org :tangle features/blocks.org
+  ,* Commented blocks
+  
+  ,The following will not be rendered because it is a comment block.
+  
+  ,#+BEGIN_COMMENT
+  ,This should not be rendered?
+  ,#+END_COMMENT
+#+end_src
 
 * NEEDS_EXAMPLES Tables
-* [0/4] Exporting OPTIONS
+* Export settings in buffer [4/6]
 
 The default export options can be modified slightly as
 documented here:
 
-http://orgmode.org/manual/In_002dbuffer-settings.html
-http://orgmode.org/manual/Export-settings.html#Export-settings
+[[http://orgmode.org/manual/In_002dbuffer-settings.html]]
+[[http://orgmode.org/manual/Export-settings.html#Export-settings]]
 
-** NEEDS_EXAMPLES Keywords can be changed with options
+** IMPLEMENTED #+TODO: Customize headline keywords
 
-#+begin_src org :tangle features/options_custom_keywords_in_headlines.org
-
+#+begin_src org :tangle features/options_headline_custom_keywords.org
+  ,#+TODO: TODO | DONE CANCELED
+  
+  ,* DONE Default keyword
+  ,* CANCELED Custom keyword
+  ,* TODO Default keyword
 #+end_src
 
-** NEEDS_EXAMPLES #+TITLE: option
+** IMPLEMENTED #+TITLE: option
+
+This option creates a paragraph with the css class =p.title=.
+
+#+begin_src org :features/options_title.org
+  ,#+TITLE:   Export Title
+  
+  ,This simple org document should get a title from the =TITLE= option at
+  ,the front of the file.
+#+end_src
+
+** IMPLEMENTED #+OPTIONS: todo:t Display headline keywords
+
+In org-ruby, TODO keywords will not be displayed by default.
+In order to do this, it is necessary to specify it in the =#+OPTIONS:=.
+
+#+begin_src org :tangle features/headline_custom_keywords_displayed.org
+  ,#+TODO: TODO | DONE CANCELED
+  ,#+OPTIONS: todo:t
+  
+  ,* DONE Default keyword
+  ,* CANCELED Custom keyword
+  ,* TODO Default keyword
+#+end_src
+** PARTIALLY_IMPLEMENTED #+OPTIONS: f:t Export footnotes
+
+Anchor link output is not correct in this cases when compared to Emacs Org mode.
+
+#+begin_src org :tangle features/options_footnotes.org
+  ,#+TITLE: Footnotes
+  ,#+OPTIONS: f:t
+  
+  ,* Footnotes
+  
+  ,Using numbers [fn:0]
+  
+  ,Using letters and not defined in the footnote [fn:abc]
+  
+  ,Using letters and defined in the footnote [fn:abc:definition of abc]
+  
+  ,Defined in the footnote itself with markup [fn:1:*blub*]
+  
+  ,[fn:0] Definition of first footnote
+#+end_src
+
+** IMPLEMENTED #+TAGS: and #+EXPORT_EXCLUDE_TAGS to omit headlines
+
+#+begin_src org features/options_exclude_tags.org
+  ,#+EXPORT_EXCLUDE_TAGS: exclude noexport
+  ,#+TAGS: export noexport
+  ,#+LINK_UP:   
+  ,#+LINK_HOME: 
+  
+  ,What happens when you exceed the number of headline levels to export?
+  
+  ,* Shouldn't export                                     :noexport:
+  
+  ,  This text shouldn't be exported, right?
+  
+  ,** Nor this subheading?
+  
+  ,   Or its text?
+  
+  ,* Exclude me, too!                                                  :exclude:
+  
+  ,* Headline 1                                        :READING:DVD:
+  
+  ,** Headline 2
+  
+  ,   This bit of body *should* get exported.
+  
+  ,*** Headline 3                                           :export:
+  
+  ,    This bit of body gets exported.
+  
+  ,**** Headline 4 (include)
+  
+  ,     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+  ,     nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+  ,     erat, sed diam voluptua. At vero eos et accusam et justo duo
+  ,     dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+  ,     sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+  ,     amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+  ,     invidunt ut labore et dolore magna aliquyam erat, sed diam
+  ,     voluptua. At vero eos et accusam et justo duo dolores et ea
+  ,     rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+  ,     Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+  ,     consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+  ,     invidunt ut labore et dolore magna aliquyam erat, sed diam
+  ,     voluptua. At vero eos et accusam et justo duo dolores et ea
+  ,     rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+  ,     Lorem ipsum dolor sit amet.
+  
+  ,**** Headline 4 (exclude)                              :noexport:
+  
+  ,     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+  ,     nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+  ,     erat, sed diam voluptua. At vero eos et accusam et justo duo
+  ,     dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+  ,     sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+  ,     amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+  ,     invidunt ut labore et dolore magna aliquyam erat, sed diam
+  ,     voluptua. At vero eos et accusam et justo duo dolores et ea
+  ,     rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+  ,     Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+  ,     consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+  ,     invidunt ut labore et dolore magna aliquyam erat, sed diam
+  ,     voluptua. At vero eos et accusam et justo duo dolores et ea
+  ,     rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+  ,     Lorem ipsum dolor sit amet.
+  
+  ,***** This is not exported
+  
+  ,      This should not appear.
+  
+  ,*** Another headline 3
+  
+  ,    This one *should* get exported!!
+  
+  ,**** Another headline 4
+  
+  ,     This is also exported!!
+  
+#+end_src
 ** NEEDS_EXAMPLES #+DESCRIPTION: option
-** NEEDS_EXAMPLES #+OPTIONS: todo:t
