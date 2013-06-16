@@ -40,69 +40,6 @@ By default, the preserved keyword in a headline are TODO and DONE.
   ,** CANCELED Not a reserved keyword so it will be displayed
 #+end_src
 
-*** In emacs
-
-#+begin_src sh :replace :results output html
-cat features/headline_default_keywords.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="todo TODO">TODO</span> Headline 1</h2>
-<div class="outline-text-2" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-3">
-<h3 id="sec-1-1"><span class="todo TODO">TODO</span> Headline 2</h3>
-<div class="outline-text-3" id="text-1-1">
-
-
-</div>
-
-<div id="outline-container-1-1-1" class="outline-4">
-<h4 id="sec-1-1-1"><span class="done DONE">DONE</span> Finished Headline 3</h4>
-<div class="outline-text-4" id="text-1-1-1">
-
-
-</div>
-
-<div id="outline-container-1-1-1-1" class="outline-5">
-<h5 id="sec-1-1-1-1"><span class="todo TODO">TODO</span> Headline 4</h5>
-<div class="outline-text-5" id="text-1-1-1-1">
-
-</div>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-3">
-<h3 id="sec-1-2">CANCELED Not a reserved keyword so it will be displayed</h3>
-<div class="outline-text-3" id="text-1-2">
-
-</div>
-</div>
-</div>
-#+END_HTML
-
-*** In ruby
-
-#+begin_src sh :replace :results output html
-cat features/headline_default_keywords.org-ruby.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<h1>Headline 1</h1>
-<h2>Headline 2</h2>
-<h3>Finished Headline 3</h3>
-<h4>Headline 4</h4>
-<h2>CANCELED Not a reserved keyword so it will be displayed</h2>
-#+END_HTML
-
 ** IMPLEMENTED Keywords can be modified by specifying the =#+TODO= option.
 
 #+begin_src org :tangle features/headline_custom_keywords.org
@@ -112,69 +49,6 @@ cat features/headline_default_keywords.org-ruby.html
   ,* CANCELED Custom keyword
   ,* TODO Default keyword
 #+end_src
-
-*** In emacs
-
-#+begin_src sh :replace :results output html
-cat features/headline_default_keywords.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="todo TODO">TODO</span> Headline 1</h2>
-<div class="outline-text-2" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-3">
-<h3 id="sec-1-1"><span class="todo TODO">TODO</span> Headline 2</h3>
-<div class="outline-text-3" id="text-1-1">
-
-
-</div>
-
-<div id="outline-container-1-1-1" class="outline-4">
-<h4 id="sec-1-1-1"><span class="done DONE">DONE</span> Finished Headline 3</h4>
-<div class="outline-text-4" id="text-1-1-1">
-
-
-</div>
-
-<div id="outline-container-1-1-1-1" class="outline-5">
-<h5 id="sec-1-1-1-1"><span class="todo TODO">TODO</span> Headline 4</h5>
-<div class="outline-text-5" id="text-1-1-1-1">
-
-</div>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-3">
-<h3 id="sec-1-2">CANCELED Not a reserved keyword so it will be displayed</h3>
-<div class="outline-text-3" id="text-1-2">
-
-</div>
-</div>
-</div>
-#+END_HTML
-
-*** In ruby
-
-#+begin_src sh :replace :results output html
-cat features/headline_default_keywords.org-ruby.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<h1>Headline 1</h1>
-<h2>Headline 2</h2>
-<h3>Finished Headline 3</h3>
-<h4>Headline 4</h4>
-<h2>CANCELED Not a reserved keyword so it will be displayed</h2>
-#+END_HTML
 
 ** IMPLEMENTED Keywords can be displayed with OPTIONS
 
@@ -189,51 +63,6 @@ In order to do this, it is necessary to specify it in the =#+OPTIONS:=.
   ,* CANCELED Custom keyword
   ,* TODO Default keyword
 #+end_src
-
-*** In emacs
-
-#+begin_src sh :replace :results output html
-cat features/headline_custom_keywords_displayed.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="done DONE">DONE</span> Default keyword</h2>
-<div class="outline-text-2" id="text-1">
-
-</div>
-
-</div>
-
-<div id="outline-container-2" class="outline-2">
-<h2 id="sec-2"><span class="done CANCELED">CANCELED</span> Custom keyword</h2>
-<div class="outline-text-2" id="text-2">
-
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="todo TODO">TODO</span> Default keyword</h2>
-<div class="outline-text-2" id="text-3">
-
-</div>
-</div>
-#+END_HTML
-
-*** In ruby
-
-#+begin_src sh :replace :results output html
-cat features/headline_custom_keywords_displayed.org-ruby.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<h1><span class="todo-keyword DONE">DONE</span> Default keyword</h1>
-<h1><span class="todo-keyword CANCELED">CANCELED</span> Custom keyword</h1>
-<h1><span class="todo-keyword TODO">TODO</span> Default keyword</h1>
-#+END_HTML
 
 ** IMPLEMENTED COMMENT headlines
 
@@ -250,61 +79,6 @@ to be discarded from the rendering output.
   ,** Headline 7 is exported  
 #+end_src
 
-*** In emacs
-
-#+begin_src sh :replace :results output html
-cat features/headline_commented.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1">Headline 1</h2>
-<div class="outline-text-2" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-3">
-<h3 id="sec-1-1">Headline 2</h3>
-<div class="outline-text-3" id="text-1-1">
-
-
-</div>
-
-<div id="outline-container-1-1-1" class="outline-4">
-<h4 id="sec-1-1-1">Headline 3</h4>
-<div class="outline-text-4" id="text-1-1-1">
-
-
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-3">
-<h3 id="sec-1-2">Headline 7 is exported</h3>
-<div class="outline-text-3" id="text-1-2">
-
-</div>
-</div>
-</div>
-#+END_HTML
-
-*** In ruby
-
-#+begin_src sh :replace :results output html
-cat features/headline_commented.org-ruby.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<h1>Headline 1</h1>
-<h2>Headline 2</h2>
-<h3>Headline 3</h3>
-<h2>Headline 7 is exported</h2>
-#+END_HTML
-
 ** NOT_IMPLEMENTED QUOTE headlines
 
 QUOTE is a reserved keyword which makes the headline
@@ -316,49 +90,6 @@ work similar to the =#+begin_quote= block.
   
   ,Love is not consolation, it is light.
 #+end_src
-
-*** In emacs
-
-#+begin_src sh :replace :results output html
-cat features/headline_quoted.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1">Introduction</h2>
-<div class="outline-text-2" id="text-1">
-
-
-</div>
-
-<div id="outline-container-1-1" class="outline-3">
-<h3 id="sec-1-1">from Nietzche</h3>
-<div class="outline-text-3" id="text-1-1">
-
-<pre>
-Love is not consolation, it is light.
-</pre>
-
-</div>
-</div>
-</div>
-#+END_HTML
-
-*** In ruby
-
-This is not supported in org-ruby.
-
-#+begin_src sh :replace :results output html
-cat features/headline_quoted.org-ruby.html
-#+end_src
-
-#+RESULTS:
-#+BEGIN_HTML
-<h1>Introduction</h1>
-<h2>QUOTE from Nietzche</h2>
-<p>Love is not consolation, it is light.</p>
-#+END_HTML
 
 ** NOT_IMPLEMENTED Tags in the headlines
 
