@@ -1,0 +1,21 @@
+
+* Quote block
+
+Testing that I can have block quotes:
+
+#+BEGIN_QUOTE
+
+Quote begins, but then gets a headline:
+
+* Example
+** Subheadlines here
+
+: This is blockquote text.
+
+** What happens with this?
+
+#+begin_src ruby :results output
+puts "Hello world"
+#+end_src
+
+#+END_QUOTE

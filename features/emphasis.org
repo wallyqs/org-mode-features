@@ -1,5 +1,41 @@
 
-** Basic inline markup features
+* Emphasis that can be used in the markup
+
+You can make words *bold*,
+
+you can make words /italic/,
+
+you can make works _underlined_,
+
+you can emphasize words as =code=
+
+you can emphasize words as ~verbatim~,
+
+You can emphasize words as +strike-through+,
+
+* Horizontal rule is supported after 5 dashes
+
+Before the hr line
+
+-----
+
+After the hr line
+
+You should also be able to use subscripts like A_{0}.
+
+You should also be able to use superscripts like a^{2}.
+
+# Lines can be suppresed with #
+## in order to not render them
+
+* Basic Example
+
+You can make words *bold*, /italic/, _underlined_, =code= and
+~verbatim~, and, if you must, ‘+strike-through+’. 
+In Emacs Org mode you can also use subscripts like A_0,
+and superscripts like a^2.
+
+* Basic inline markup features
 
 *bold*
 

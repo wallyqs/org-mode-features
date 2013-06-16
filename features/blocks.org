@@ -1,0 +1,56 @@
+
+* Unknown block
+
+#+begin_src unknown
+defmodule Enum do
+  def map(collection, fun) do
+    Enumerable.reduce(collection, [], fn(x, acc) ->
+      [fun.(x, acc)|acc]
+    end) |> reverse
+  end
+end
+#+end_src
+
+#+BEGIN_EXAMPLE
+
+    def initialize(output)
+      @output = output
+      @buffer = ""
+      @output_type = :start
+      @list_indent_stack = []
+      @paragraph_modifier = nil
+
+      @logger = Logger.new(STDERR)
+      @logger.level = Logger::WARN
+    end
+
+#+END_EXAMPLE
+
+* Example with a leading comma
+
+#+begin_src ruby :results output
+  puts "Hello world " \
+  ,* 8
+#+end_src
+
+* Quote block
+
+Testing that I can have block quotes:
+
+#+BEGIN_QUOTE
+
+/Example:/
+
+This is blockquote text.
+
+#+END_QUOTE
+
+And now I'm back to normal text!
+
+* Commented blocks
+
+The following will not be rendered because it is a comment block.
+
+#+BEGIN_COMMENT
+This should not be rendered?
+#+END_COMMENT

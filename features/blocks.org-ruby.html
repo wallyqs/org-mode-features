@@ -1,0 +1,36 @@
+<h1>Unknown block</h1>
+<div class="highlight"><pre>defmodule Enum do
+  def map(collection, fun) do
+    Enumerable.reduce(collection, [], fn(x, acc) -&gt;
+      [fun.(x, acc)|acc]
+    end) |&gt; reverse
+  end
+end
+</pre></div>
+<pre class="example">
+
+def initialize(output)
+  @output = output
+  @buffer = &quot;&quot;
+  @output_type = :start
+  @list_indent_stack = []
+  @paragraph_modifier = nil
+
+  @logger = Logger.new(STDERR)
+  @logger.level = Logger::WARN
+end
+
+</pre>
+<h1>Example with a leading comma</h1>
+<div class="highlight"><pre><span class="nb">puts</span> <span class="s2">&quot;Hello world &quot;</span> <span class="p">\</span>
+<span class="p">,</span><span class="o">*</span> <span class="mi">8</span>
+</pre></div>
+<h1>Quote block</h1>
+<p>Testing that I can have block quotes:</p>
+<blockquote>
+  <p><i>Example:</i></p>
+  <p>This is blockquote text.</p>
+</blockquote>
+<p>And now I&#8217;m back to normal text!</p>
+<h1>Commented blocks</h1>
+<p>The following will not be rendered because it is a comment block.</p>

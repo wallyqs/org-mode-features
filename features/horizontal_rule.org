@@ -1,8 +1,0 @@
-
-* Horizontal rule is supported after 5 dashes
-
-Before the hr line
-
------
-
-After the hr line
